@@ -20,6 +20,9 @@ jobs:
         # Run tests on multiple browsers
         browser: [chromium, firefox, webkit]
     
+    env:
+      WARMUP_BROWSER: ${{ matrix.browser }}
+
     steps:
     - uses: actions/checkout@v4
     
