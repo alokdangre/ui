@@ -1,4 +1,4 @@
-import { chromium, FullConfig } from '@playwright/test';
+import { FullConfig, chromium, firefox, webkit } from '@playwright/test';
 
 async function globalSetup(config: FullConfig) {
   console.log('🎭 Playwright Global Setup Started');
@@ -6,8 +6,15 @@ async function globalSetup(config: FullConfig) {
   // Get base URL from config or environment
   const baseURL = config.projects[0]?.use?.baseURL || 'http://localhost:5173';
 
+  const browserName = config.projects[0]?.use?.browserName || 'chromium';
+
+  let browserType;
+  if (browserName === 'firefox') browserType = firefox;
+  else if (browserName === 'webkit') browserType = webkit;
+  else browserType = chromium;
+
   // Optional: Warm up the application
-  const browser = await chromium.launch();
+  const browser = await browserType.launch();
   const page = await browser.newPage();
 
   try {
