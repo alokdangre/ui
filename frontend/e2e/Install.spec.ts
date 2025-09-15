@@ -1,4 +1,4 @@
-import {test, expect} from '@playwright/test'
+import {test} from '@playwright/test'
 
 test('install',async({page}) => {await page.goto('http://localhost:5173/install');
     await page.getByRole('heading', { name: 'Welcome to KubeStellar' }).click();
