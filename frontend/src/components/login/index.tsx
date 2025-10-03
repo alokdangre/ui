@@ -56,7 +56,7 @@ function Loader() {
 export function KubeStellarVisualization() {
   // Check if canvas/WebGL should be disabled (for CI environments)
   const disableCanvas = import.meta.env.VITE_DISABLE_CANVAS === 'true';
-  
+
   // State for controlling animations and component visibility
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -82,7 +82,7 @@ export function KubeStellarVisualization() {
     if (disableCanvas) {
       console.info('[INFO] Canvas/WebGL disabled via VITE_DISABLE_CANVAS');
     }
-    
+
     const timer = setTimeout(() => setIsLoaded(true), 600);
     // Show login form with a slight delay after the main content loads
     const loginTimer = setTimeout(() => setShowLogin(true), 900);
@@ -157,10 +157,10 @@ export function KubeStellarVisualization() {
                 </Canvas>
               ) : (
                 // Fallback: Static placeholder when Canvas/WebGL is disabled
-                <div 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
                     background: 'linear-gradient(135deg, #050a15 0%, #0a0f1c 50%, #1a1a2e 100%)',
                     display: 'flex',
                     alignItems: 'center',
@@ -170,7 +170,7 @@ export function KubeStellarVisualization() {
                   }}
                 >
                   {/* Static background pattern */}
-                  <div 
+                  <div
                     style={{
                       position: 'absolute',
                       top: 0,
@@ -185,9 +185,10 @@ export function KubeStellarVisualization() {
                       animation: 'pulse 4s ease-in-out infinite alternate'
                     }}
                   />
-                  
+
                   {/* Static logo/text placeholder */}
-                  <div 
+                  <div
+                    data-testid="canvas-disabled-placeholder"
                     style={{
                       textAlign: 'center',
                       color: '#ffffff',
@@ -195,7 +196,8 @@ export function KubeStellarVisualization() {
                       opacity: 0.8
                     }}
                   >
-                    <div 
+                    <div
+                      data-testid="canvas-disabled-title"
                       style={{
                         fontSize: '3rem',
                         fontWeight: 'bold',
@@ -208,11 +210,14 @@ export function KubeStellarVisualization() {
                     >
                       KubeStellar
                     </div>
-                    <div style={{ fontSize: '1.2rem', opacity: 0.7 }}>
+                    <div
+                      data-testid="canvas-disabled-subtitle"
+                      style={{ fontSize: '1.2rem', opacity: 0.7 }}
+                    >
                       Multi-Cluster Orchestration
                     </div>
                   </div>
-                  
+
                   <style>
                     {`
                       @keyframes pulse {

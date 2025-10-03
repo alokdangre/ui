@@ -17,13 +17,14 @@ test.describe('Login Page', () => {
     await expect(page.getByText('Built for the Future.')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Toggle full screen' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'English' })).toBeVisible();
-    
+
     // Check if canvas is disabled in CI environment
     const isCI = !!process.env.CI;
     if (isCI) {
       // In CI, canvas should be disabled and replaced with static placeholder
-      await expect(page.getByText('KubeStellar')).toBeVisible();
-      await expect(page.getByText('Multi-Cluster Orchestration')).toBeVisible();
+      await expect(page.getByTestId('canvas-disabled-placeholder')).toBeVisible();
+      await expect(page.getByTestId('canvas-disabled-title')).toBeVisible();
+      await expect(page.getByTestId('canvas-disabled-subtitle')).toBeVisible();
     } else {
       // In local development, canvas should be visible
       await expect(page.locator('canvas')).toBeVisible();
