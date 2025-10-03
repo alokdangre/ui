@@ -86,5 +86,9 @@ export default defineConfig({
     url: 'http://localhost:5173',
     reuseExistingServer: !isCI,
     timeout: 120 * 1000,
+    env: {
+      // Disable Canvas/WebGL in CI to prevent WebGL context creation errors
+      VITE_DISABLE_CANVAS: isCI ? 'true' : 'false',
+    },
   },
 });
