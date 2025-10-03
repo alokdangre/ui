@@ -28,6 +28,7 @@ export default defineConfig({
       VITE_PROMETHEUS_URL: process.env.VITE_PROMETHEUS_URL || 'http://localhost:9090',
       VITE_GIT_COMMIT_HASH: getGitCommitHash(),
       VITE_DISABLE_CANVAS: process.env.VITE_DISABLE_CANVAS || 'false',
+      VITE_PLAYWRIGHT_TESTING: process.env.VITE_PLAYWRIGHT_TESTING || 'false',
     }),
   ],
 

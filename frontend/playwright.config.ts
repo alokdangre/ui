@@ -87,8 +87,8 @@ export default defineConfig({
     reuseExistingServer: !isCI,
     timeout: 120 * 1000,
     env: {
-      // Set VITE_DISABLE_CANVAS based on browser detection in the app
-      // The app will check the user agent to determine if it's Firefox
+      // Set environment variable to indicate we're running in Playwright tests
+      VITE_PLAYWRIGHT_TESTING: 'true',
       VITE_DISABLE_CANVAS: 'false', // Default to false, let the app handle Firefox detection
     },
   },
