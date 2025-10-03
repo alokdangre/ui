@@ -87,8 +87,9 @@ export default defineConfig({
     reuseExistingServer: !isCI,
     timeout: 120 * 1000,
     env: {
-      // Disable Canvas/WebGL in CI to prevent WebGL context creation errors
-      VITE_DISABLE_CANVAS: isCI ? 'true' : 'false',
+      // Set VITE_DISABLE_CANVAS based on browser detection in the app
+      // The app will check the user agent to determine if it's Firefox
+      VITE_DISABLE_CANVAS: 'false', // Default to false, let the app handle Firefox detection
     },
   },
 });

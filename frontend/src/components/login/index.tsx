@@ -54,8 +54,10 @@ function Loader() {
  * - Or use individual components (NetworkGlobe, LoginForm) separately
  */
 export function KubeStellarVisualization() {
-  // Check if canvas/WebGL should be disabled (for CI environments)
-  const disableCanvas = import.meta.env.VITE_DISABLE_CANVAS === 'true';
+  // Check if canvas/WebGL should be disabled (only in test environments)
+  const isTestEnvironment = import.meta.env.MODE === 'test' || typeof window !== 'undefined' && window.location.search.includes('playwright');
+  const isFirefox = isTestEnvironment && typeof navigator !== 'undefined' && navigator.userAgent.includes('Firefox');
+  const disableCanvas = import.meta.env.VITE_DISABLE_CANVAS === 'true' || isFirefox;
 
   // State for controlling animations and component visibility
   const [isLoaded, setIsLoaded] = useState(false);
@@ -79,8 +81,11 @@ export function KubeStellarVisualization() {
 
   // Simulate initial loading state - streamlined to reduce unnecessary delay
   useEffect(() => {
-    if (disableCanvas) {
-      console.info('[INFO] Canvas/WebGL disabled via VITE_DISABLE_CANVAS');
+    if (disableCanvas && isTestEnvironment) {
+      const reason = import.meta.env.VITE_DISABLE_CANVAS === 'true' 
+        ? 'VITE_DISABLE_CANVAS environment variable' 
+        : 'Firefox browser detected (WebGL issues in headless mode)';
+      console.info(`[INFO] Canvas/WebGL disabled via ${reason}`);
     }
 
     const timer = setTimeout(() => setIsLoaded(true), 600);
@@ -91,7 +96,7 @@ export function KubeStellarVisualization() {
       clearTimeout(timer);
       clearTimeout(loginTimer);
     };
-  }, [disableCanvas]);
+  }, [disableCanvas, isTestEnvironment]);
 
   return (
     <div

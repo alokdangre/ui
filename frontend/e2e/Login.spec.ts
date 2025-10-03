@@ -18,15 +18,17 @@ test.describe('Login Page', () => {
     await expect(page.getByRole('button', { name: 'Toggle full screen' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'English' })).toBeVisible();
 
-    // Check if canvas is disabled in CI environment
-    const isCI = !!process.env.CI;
-    if (isCI) {
-      // In CI, canvas should be disabled and replaced with static placeholder
+    // Check if running on Firefox browser (WebGL issues are Firefox-specific)
+    const browserName = page.context().browser()?.browserType().name();
+    const isFirefox = browserName === 'firefox';
+    
+    if (isFirefox) {
+      // In Firefox, canvas should be disabled and replaced with static placeholder
       await expect(page.getByTestId('canvas-disabled-placeholder')).toBeVisible();
       await expect(page.getByTestId('canvas-disabled-title')).toBeVisible();
       await expect(page.getByTestId('canvas-disabled-subtitle')).toBeVisible();
     } else {
-      // In local development, canvas should be visible
+      // In Chromium and WebKit, canvas should be visible
       await expect(page.locator('canvas')).toBeVisible();
     }
   });
