@@ -22,14 +22,14 @@ test.describe('ITS Page - Complete Tests', () => {
 
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
-    
+
     // Should show table
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Should show clusters from MSW mock data
     await expect(page.getByText('cluster1').first()).toBeVisible();
     await expect(page.getByText('cluster2').first()).toBeVisible();
-    
+
     // Should show cluster count
     const rows = page.locator('tbody tr');
     await expect(rows).toHaveCount(2);
@@ -37,7 +37,7 @@ test.describe('ITS Page - Complete Tests', () => {
 
   test('displays loading state initially', async ({ page }) => {
     await page.goto(`${BASE}/its`);
-    
+
     // Should show loading indicator initially
     try {
       const loadingIndicator = page.locator('[class*="loading"], [class*="spinner"]').first();
@@ -49,7 +49,7 @@ test.describe('ITS Page - Complete Tests', () => {
         await expect(loadingText).toBeVisible();
       }
     }
-    
+
     // Wait for content to load
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
@@ -66,22 +66,22 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Find search input
     const searchInput = page.locator('input[type="text"]').first();
     await expect(searchInput).toBeVisible();
-    
+
     // Search for cluster1
     await searchInput.fill('cluster1');
     await page.waitForTimeout(1000);
-    
+
     // Should filter to show only cluster1
     await expect(page.getByText('cluster1').first()).toBeVisible();
-    
+
     // Clear search
     await searchInput.clear();
     await page.waitForTimeout(500);
-    
+
     // Should show all clusters again
     await expect(page.getByText('cluster1').first()).toBeVisible();
     await expect(page.getByText('cluster2').first()).toBeVisible();
@@ -98,15 +98,18 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Find import button
-    const importButton = page.getByRole('button').filter({ hasText: /Import|Add|Connect/i }).first();
+    const importButton = page
+      .getByRole('button')
+      .filter({ hasText: /Import|Add|Connect/i })
+      .first();
     await expect(importButton).toBeVisible();
-    
+
     // Click import button
     await importButton.click();
     await page.waitForTimeout(1000);
-    
+
     // Should open import dialog
     const dialog = page.locator('[role="dialog"], .modal, [class*="dialog"]').first();
     if (await dialog.isVisible()) {
@@ -125,11 +128,13 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Look for status indicators
-    const statusBadges = page.locator('[class*="badge"], [class*="status"], [class*="chip"]').filter({ hasText: /Active|Available|Ready|Running/i });
+    const statusBadges = page
+      .locator('[class*="badge"], [class*="status"], [class*="chip"]')
+      .filter({ hasText: /Active|Available|Ready|Running/i });
     const badgeCount = await statusBadges.count();
-    
+
     if (badgeCount > 0) {
       await expect(statusBadges.first()).toBeVisible();
     }
@@ -146,14 +151,16 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Check for table headers
     const headers = page.locator('th, [role="columnheader"]');
     const headerCount = await headers.count();
     expect(headerCount).toBeGreaterThan(0);
-    
+
     // Should have name column
-    const nameHeader = page.locator('th, [role="columnheader"]').filter({ hasText: /Name|Cluster/i });
+    const nameHeader = page
+      .locator('th, [role="columnheader"]')
+      .filter({ hasText: /Name|Cluster/i });
     if (await nameHeader.first().isVisible()) {
       await expect(nameHeader.first()).toBeVisible();
     }
@@ -170,19 +177,23 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Look for action buttons or menu
-    const actionButtons = page.locator('button').filter({ hasText: /Action|Menu|Edit|Delete|Detach/i });
+    const actionButtons = page
+      .locator('button')
+      .filter({ hasText: /Action|Menu|Edit|Delete|Detach/i });
     const actionCount = await actionButtons.count();
-    
+
     if (actionCount > 0) {
       await expect(actionButtons.first()).toBeVisible();
     }
-    
+
     // Look for three-dot menu or action dropdown
-    const menuButtons = page.locator('[class*="menu"], [class*="dropdown"], button[aria-label*="menu"]');
+    const menuButtons = page.locator(
+      '[class*="menu"], [class*="dropdown"], button[aria-label*="menu"]'
+    );
     const menuCount = await menuButtons.count();
-    
+
     if (menuCount > 0) {
       await expect(menuButtons.first()).toBeVisible();
     }
@@ -199,20 +210,20 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Test Ctrl+F for search focus
     await page.keyboard.press('Control+f');
     await page.waitForTimeout(300);
-    
+
     const searchInput = page.locator('input[type="text"]').first();
     const isFocused = await searchInput.evaluate(el => el === document.activeElement);
     expect(isFocused).toBe(true);
-    
+
     // Type in search
     await searchInput.fill('cluster1');
     await page.waitForTimeout(1000);
     await expect(page.locator('tbody tr')).toHaveCount(1);
-    
+
     // Test Escape to clear
     await page.keyboard.press('Escape');
     await page.waitForTimeout(500);
@@ -232,14 +243,17 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
-    
+
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Clusters should still be visible
     await expect(page.getByText('cluster1').first()).toBeVisible();
-    
+
     // Import button should be accessible
-    const importButton = page.getByRole('button').filter({ hasText: /Import|Add|Connect/i }).first();
+    const importButton = page
+      .getByRole('button')
+      .filter({ hasText: /Import|Add|Connect/i })
+      .first();
     if (await importButton.isVisible()) {
       await expect(importButton).toBeVisible();
     }
@@ -256,14 +270,14 @@ test.describe('ITS Page - Complete Tests', () => {
     await page.goto(`${BASE}/its`);
     await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    
+
     // Should show initial clusters
     await expect(page.getByText('cluster1').first()).toBeVisible();
-    
+
     // Refresh page
     await page.reload();
     await page.waitForLoadState('networkidle');
-    
+
     // Should still show clusters after refresh
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
     await expect(page.getByText('cluster1').first()).toBeVisible();

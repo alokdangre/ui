@@ -30,7 +30,7 @@ export const scenarios: Record<string, HttpHandler[]> = {
   userActivity: [h.userActivities, h.deletedUserActivities, h.me],
   clusterDetails: [h.clusterDetails, h.clusterStatus, h.clusters],
   workloadDetails: [h.workloadDetails, h.workloadStatus, h.workloadLogs, h.workloads],
-  
+
   // ITS specific scenarios
   itsSuccess: [
     h.login,

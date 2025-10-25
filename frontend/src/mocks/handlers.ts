@@ -187,10 +187,7 @@ export const clusters: HttpHandler = http.get('http://localhost:4000/api/new/clu
 
 // ITS Error scenarios
 export const clustersError: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
-  HttpResponse.json(
-    { error: 'Failed to load managed clusters' },
-    { status: 500 }
-  )
+  HttpResponse.json({ error: 'Failed to load managed clusters' }, { status: 500 })
 );
 
 export const clustersEmpty: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
@@ -200,26 +197,23 @@ export const clustersEmpty: HttpHandler = http.get('http://localhost:4000/api/ne
   })
 );
 
-export const clustersTimeout: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(HttpResponse.json({ error: 'Request timeout' }, { status: 408 }));
-    }, 30000); // 30 second delay to simulate timeout
-  })
+export const clustersTimeout: HttpHandler = http.get(
+  'http://localhost:4000/api/new/clusters',
+  () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        resolve(HttpResponse.json({ error: 'Request timeout' }, { status: 408 }));
+      }, 30000); // 30 second delay to simulate timeout
+    })
 );
 
 export const clustersAuth: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
-  HttpResponse.json(
-    { error: 'Unauthorized access' },
-    { status: 401 }
-  )
+  HttpResponse.json({ error: 'Unauthorized access' }, { status: 401 })
 );
 
-export const clustersRateLimit: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
-  HttpResponse.json(
-    { error: 'Rate limit exceeded' },
-    { status: 429 }
-  )
+export const clustersRateLimit: HttpHandler = http.get(
+  'http://localhost:4000/api/new/clusters',
+  () => HttpResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
 );
 
 export const bindingPolicies: HttpHandler = http.get('http://localhost:4000/api/bp', () =>

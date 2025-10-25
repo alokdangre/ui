@@ -42,7 +42,9 @@ test.describe('ITS Table Features Tests', () => {
 
   test('table sorting works on sortable columns', async ({ page }) => {
     // Look for sortable column headers (usually have arrows or are clickable)
-    const sortableHeaders = page.locator('thead th[role="button"], thead th[class*="sortable"], thead th button');
+    const sortableHeaders = page.locator(
+      'thead th[role="button"], thead th[class*="sortable"], thead th button'
+    );
     const sortableCount = await sortableHeaders.count();
 
     if (sortableCount > 0) {
@@ -83,10 +85,10 @@ test.describe('ITS Table Features Tests', () => {
           labels: { environment: 'test', region: `region-${(i % 3) + 1}` },
           status: {
             conditions: [{ type: 'Ready', status: 'True', message: 'Ready' }],
-            capacity: { cpu: '4', memory: '8Gi', pods: '110' }
+            capacity: { cpu: '4', memory: '8Gi', pods: '110' },
           },
           available: true,
-          joined: true
+          joined: true,
         });
       }
 
@@ -95,8 +97,8 @@ test.describe('ITS Table Features Tests', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           clusters,
-          count: totalClusters
-        })
+          count: totalClusters,
+        }),
       });
     });
 
@@ -110,10 +112,16 @@ test.describe('ITS Table Features Tests', () => {
       await expect(paginationControls.first()).toBeVisible();
 
       // Look for next/previous buttons
-      const nextButton = page.getByRole('button').filter({ hasText: /next|>/i }).first();
-      const prevButton = page.getByRole('button').filter({ hasText: /prev|</i }).first();
+      const nextButton = page
+        .getByRole('button')
+        .filter({ hasText: /next|>/i })
+        .first();
+      const prevButton = page
+        .getByRole('button')
+        .filter({ hasText: /prev|</i })
+        .first();
 
-      if (await nextButton.isVisible() && await nextButton.isEnabled()) {
+      if ((await nextButton.isVisible()) && (await nextButton.isEnabled())) {
         await nextButton.click();
         await page.waitForTimeout(1000);
 
@@ -121,7 +129,7 @@ test.describe('ITS Table Features Tests', () => {
         await expect(page.locator('text=cluster-11')).toBeVisible({ timeout: 5000 });
 
         // Previous button should now be enabled
-        if (await prevButton.isVisible() && await prevButton.isEnabled()) {
+        if ((await prevButton.isVisible()) && (await prevButton.isEnabled())) {
           await prevButton.click();
           await page.waitForTimeout(1000);
 
@@ -193,11 +201,11 @@ test.describe('ITS Table Features Tests', () => {
               labels: { environment: 'test' },
               status: { conditions: [], capacity: {} },
               available: true,
-              joined: true
-            }
+              joined: true,
+            },
           ],
-          count: 1
-        })
+          count: 1,
+        }),
       });
     });
 
@@ -297,7 +305,10 @@ test.describe('ITS Table Features Tests', () => {
 
   test('table column visibility can be toggled', async ({ page }) => {
     // Look for column visibility controls
-    const columnToggle = page.getByRole('button').filter({ hasText: /columns|view|show/i }).first();
+    const columnToggle = page
+      .getByRole('button')
+      .filter({ hasText: /columns|view|show/i })
+      .first();
 
     if (await columnToggle.isVisible()) {
       await columnToggle.click();
