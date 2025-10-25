@@ -43,61 +43,6 @@ export const scenarios: Record<string, HttpHandler[]> = {
     h.updateClusterLabels,
     h.detachCluster,
   ],
-  itsError: [
-    h.login,
-    h.me,
-    h.clustersError, // Error response for clusters
-    h.k8sInfo,
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.updateClusterLabels,
-    h.detachCluster,
-  ],
-  itsEmpty: [
-    h.login,
-    h.me,
-    h.clustersEmpty, // Empty clusters response
-    h.k8sInfo,
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.updateClusterLabels,
-    h.detachCluster,
-  ],
-  itsTimeout: [
-    h.login,
-    h.me,
-    h.clustersTimeout, // Timeout response for clusters
-    h.k8sInfo,
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.updateClusterLabels,
-    h.detachCluster,
-  ],
-  itsAuth: [
-    h.login,
-    h.me,
-    h.clustersAuth, // Auth error for clusters
-    h.k8sInfo,
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.updateClusterLabels,
-    h.detachCluster,
-  ],
-  itsRateLimit: [
-    h.login,
-    h.me,
-    h.clustersRateLimit, // Rate limit error for clusters
-    h.k8sInfo,
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.updateClusterLabels,
-    h.detachCluster,
-  ],
 
   // ITS action scenarios
   itsLabelsSuccess: [
@@ -106,18 +51,6 @@ export const scenarios: Record<string, HttpHandler[]> = {
     h.clusters,
     h.k8sInfo,
     h.updateClusterLabelsSuccess, // Successful label updates
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.detachCluster,
-  ],
-
-  itsLabelsError: [
-    h.login,
-    h.me,
-    h.clusters,
-    h.k8sInfo,
-    h.updateClusterLabelsError, // Failed label updates
     h.importCluster,
     h.onboardCluster,
     h.generateOnboardCommand,
@@ -158,18 +91,6 @@ export const scenarios: Record<string, HttpHandler[]> = {
     h.generateOnboardCommand,
     h.updateClusterLabels,
     h.detachClusterSuccess, // Successful detach
-  ],
-
-  itsDetachError: [
-    h.login,
-    h.me,
-    h.clusters,
-    h.k8sInfo,
-    h.importCluster,
-    h.onboardCluster,
-    h.generateOnboardCommand,
-    h.updateClusterLabels,
-    h.detachClusterError, // Failed detach
   ],
 
   itsPagination: [
