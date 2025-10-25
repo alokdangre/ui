@@ -265,17 +265,11 @@ current-context: test-context`;
   });
 
   test('import success shows confirmation', async ({ page }) => {
-    // Mock successful import response
-    await page.route('**/clusters/import*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Cluster imported successfully',
-          clusterName: 'test-cluster',
-        }),
-      });
+    // Apply MSW scenario for successful import
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsImportSuccess');
+      }
     });
 
     // Open import dialog
@@ -312,15 +306,11 @@ current-context: test-context`;
   });
 
   test('import error shows error message', async ({ page }) => {
-    // Mock error response
-    await page.route('**/clusters/import*', route => {
-      route.fulfill({
-        status: 400,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          error: 'Invalid cluster configuration',
-        }),
-      });
+    // Apply MSW scenario for import error
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsImportError');
+      }
     });
 
     // Open import dialog and try to import

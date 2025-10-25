@@ -61,16 +61,11 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('edit labels dialog opens and works', async ({ page }) => {
-    // Mock successful label update
-    await page.route('**/api/managedclusters/labels*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Labels updated successfully',
-        }),
-      });
+    // Apply MSW scenario for successful label operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLabelsSuccess');
+      }
     });
 
     // Find and click actions button
@@ -123,34 +118,11 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('view cluster details dialog opens', async ({ page }) => {
-    // Mock cluster details response
-    await page.route('**/api/clusters/cluster1*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          name: 'cluster1',
-          uid: 'test-uid',
-          creationTimestamp: '2024-01-15T10:30:00Z',
-          labels: { environment: 'test' },
-          status: {
-            conditions: [
-              {
-                type: 'Ready',
-                status: 'True',
-                message: 'Cluster is ready',
-              },
-            ],
-            capacity: {
-              cpu: '4',
-              memory: '8Gi',
-              pods: '110',
-            },
-          },
-          available: true,
-          joined: true,
-        }),
-      });
+    // Use default MSW success scenario (includes cluster details)
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsSuccess');
+      }
     });
 
     // Find and click actions button
@@ -189,16 +161,11 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('detach cluster confirmation dialog works', async ({ page }) => {
-    // Mock successful detach response
-    await page.route('**/clusters/detach*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Cluster detached successfully',
-        }),
-      });
+    // Apply MSW scenario for successful detach operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsDetachSuccess');
+      }
     });
 
     // Find and click actions button
@@ -262,16 +229,11 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('bulk label management works with multiple selections', async ({ page }) => {
-    // Mock successful bulk label update
-    await page.route('**/api/managedclusters/labels*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Labels updated for multiple clusters',
-        }),
-      });
+    // Apply MSW scenario for successful label operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLabelsSuccess');
+      }
     });
 
     // Select multiple clusters

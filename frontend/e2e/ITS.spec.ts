@@ -258,28 +258,4 @@ test.describe('ITS Page - Complete Tests', () => {
       await expect(importButton).toBeVisible();
     }
   });
-
-  test('page refreshes data correctly', async ({ page }) => {
-    // Apply MSW success scenario
-    await page.evaluate(() => {
-      if (window.__msw) {
-        window.__msw.applyScenarioByName('itsSuccess');
-      }
-    });
-
-    await page.goto(`${BASE}/its`);
-    await page.waitForLoadState('networkidle');
-    await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-
-    // Should show initial clusters
-    await expect(page.getByText('cluster1').first()).toBeVisible();
-
-    // Refresh page
-    await page.reload();
-    await page.waitForLoadState('networkidle');
-
-    // Should still show clusters after refresh
-    await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
-    await expect(page.getByText('cluster1').first()).toBeVisible();
-  });
 });

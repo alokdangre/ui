@@ -107,16 +107,11 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('label editing dialog shows existing labels', async ({ page }) => {
-    // Mock successful label update
-    await page.route('**/api/managedclusters/labels*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Labels updated successfully',
-        }),
-      });
+    // Apply MSW scenario for successful label operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLabelsSuccess');
+      }
     });
 
     // Open cluster actions menu
@@ -154,16 +149,11 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('new labels can be added in edit dialog', async ({ page }) => {
-    // Mock successful label update
-    await page.route('**/api/managedclusters/labels*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Labels updated successfully',
-        }),
-      });
+    // Apply MSW scenario for successful label operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLabelsSuccess');
+      }
     });
 
     // Open label edit dialog
@@ -230,16 +220,11 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('labels can be deleted in edit dialog', async ({ page }) => {
-    // Mock successful label update
-    await page.route('**/api/managedclusters/labels*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Labels updated successfully',
-        }),
-      });
+    // Apply MSW scenario for successful label operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLabelsSuccess');
+      }
     });
 
     // Open label edit dialog
@@ -359,17 +344,11 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('bulk label editing works for multiple clusters', async ({ page }) => {
-    // Mock successful bulk update
-    await page.route('**/api/managedclusters/labels*', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          message: 'Labels updated for multiple clusters',
-          bulkOperation: true,
-        }),
-      });
+    // Apply MSW scenario for successful label operations
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLabelsSuccess');
+      }
     });
 
     // Select multiple clusters

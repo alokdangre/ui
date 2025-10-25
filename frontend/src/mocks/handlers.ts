@@ -216,6 +216,105 @@ export const clustersRateLimit: HttpHandler = http.get(
   () => HttpResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
 );
 
+export const updateClusterLabelsSuccess: HttpHandler = http.patch(
+  'http://localhost:4000/api/managedclusters/labels',
+  () =>
+    HttpResponse.json({
+      success: true,
+      message: 'Labels updated successfully',
+    })
+);
+
+export const updateClusterLabelsError: HttpHandler = http.patch(
+  'http://localhost:4000/api/managedclusters/labels',
+  () => HttpResponse.json({ error: 'Failed to update labels' }, { status: 500 })
+);
+
+export const importClusterSuccess: HttpHandler = http.post(
+  'http://localhost:4000/clusters/import',
+  () =>
+    HttpResponse.json({
+      success: true,
+      message: 'Cluster imported successfully',
+    })
+);
+
+export const importClusterError: HttpHandler = http.post(
+  'http://localhost:4000/clusters/import',
+  () => HttpResponse.json({ error: 'Invalid cluster configuration' }, { status: 400 })
+);
+
+export const detachClusterSuccess: HttpHandler = http.post(
+  'http://localhost:4000/clusters/detach',
+  () =>
+    HttpResponse.json({
+      success: true,
+      message: 'Cluster detached successfully',
+    })
+);
+
+export const detachClusterError: HttpHandler = http.post(
+  'http://localhost:4000/clusters/detach',
+  () => HttpResponse.json({ error: 'Failed to detach cluster' }, { status: 500 })
+);
+
+// Paginated clusters for testing pagination
+export const clustersPaginated: HttpHandler = http.get(
+  'http://localhost:4000/api/new/clusters',
+  ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const pageSize = 10;
+
+    // Generate clusters for pagination testing
+    const totalClusters = 25;
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, totalClusters);
+
+    const clusters = [];
+    for (let i = startIndex; i < endIndex; i++) {
+      clusters.push({
+        name: `cluster-${i + 1}`,
+        uid: `uid-${i + 1}`,
+        creationTimestamp: '2024-01-15T10:30:00Z',
+        labels: { environment: 'test', page: page.toString() },
+        status: { conditions: [], capacity: {} },
+        available: true,
+        joined: true,
+      });
+    }
+
+    return HttpResponse.json({
+      clusters,
+      count: totalClusters,
+      page,
+      totalPages: Math.ceil(totalClusters / pageSize),
+    });
+  }
+);
+
+// Delayed response for loading state testing
+export const clustersDelayed: HttpHandler = http.get(
+  'http://localhost:4000/api/new/clusters',
+  async () => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return HttpResponse.json({
+      clusters: [
+        {
+          name: 'cluster1',
+          uid: 'uid-1',
+          creationTimestamp: '2024-01-15T10:30:00Z',
+          labels: { environment: 'test' },
+          status: { conditions: [], capacity: {} },
+          available: true,
+          joined: true,
+        },
+      ],
+      count: 1,
+    });
+  }
+);
+
 export const bindingPolicies: HttpHandler = http.get('http://localhost:4000/api/bp', () =>
   HttpResponse.json({ bindingPolicies: [], count: 0 })
 );

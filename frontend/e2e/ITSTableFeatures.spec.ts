@@ -65,45 +65,13 @@ test.describe('ITS Table Features Tests', () => {
   });
 
   test('table pagination works with many clusters', async ({ page }) => {
-    // Mock response with many clusters to test pagination
-    await page.route('**/api/new/clusters*', route => {
-      const url = new URL(route.request().url());
-      const pageNum = parseInt(url.searchParams.get('page') || '1');
-
-      // Create 25 mock clusters
-      const totalClusters = 25;
-      const pageSize = 10;
-      const startIndex = (pageNum - 1) * pageSize;
-      const endIndex = Math.min(startIndex + pageSize, totalClusters);
-
-      const clusters = [];
-      for (let i = startIndex; i < endIndex; i++) {
-        clusters.push({
-          name: `cluster-${i + 1}`,
-          uid: `uid-${i + 1}`,
-          creationTimestamp: '2024-01-15T10:30:00Z',
-          labels: { environment: 'test', region: `region-${(i % 3) + 1}` },
-          status: {
-            conditions: [{ type: 'Ready', status: 'True', message: 'Ready' }],
-            capacity: { cpu: '4', memory: '8Gi', pods: '110' },
-          },
-          available: true,
-          joined: true,
-        });
+    // Apply MSW scenario for paginated clusters
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsPagination');
       }
-
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          clusters,
-          count: totalClusters,
-        }),
-      });
     });
 
-    await page.reload();
-    await page.waitForLoadState('networkidle');
     await expect(page.locator('table').first()).toBeVisible({ timeout: 15000 });
 
     // Should show pagination controls
@@ -184,32 +152,12 @@ test.describe('ITS Table Features Tests', () => {
   });
 
   test('table loading state displays during data fetch', async ({ page }) => {
-    // Intercept API to add delay
-    await page.route('**/api/new/clusters*', async route => {
-      // Add delay to see loading state
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          clusters: [
-            {
-              name: 'cluster1',
-              uid: 'uid-1',
-              creationTimestamp: '2024-01-15T10:30:00Z',
-              labels: { environment: 'test' },
-              status: { conditions: [], capacity: {} },
-              available: true,
-              joined: true,
-            },
-          ],
-          count: 1,
-        }),
-      });
+    // Apply MSW scenario for delayed loading
+    await page.evaluate(() => {
+      if (window.__msw) {
+        window.__msw.applyScenarioByName('itsLoading');
+      }
     });
-
-    await page.reload();
 
     // Should show loading indicator
     try {
