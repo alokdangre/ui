@@ -222,11 +222,6 @@ test.describe('ITS Cluster Actions Tests', () => {
         // Should show confirmation message
         await expect(page.locator('text=/confirm|sure|detach/i').first()).toBeVisible();
 
-        // Look for confirm and cancel buttons
-        const confirmButton = page
-          .getByRole('button')
-          .filter({ hasText: /Confirm|Yes|Detach/i })
-          .first();
         const cancelButton = page
           .getByRole('button')
           .filter({ hasText: /Cancel|No/i })
