@@ -88,6 +88,7 @@ export default defineConfig({
     env: {
       VITE_PLAYWRIGHT_TESTING: 'true',
       VITE_DISABLE_CANVAS: 'false', // app handle Firefox detection
+      VITE_USE_MSW: 'true', // Enable MSW for tests
     },
     timeout: 120 * 1000,
   },

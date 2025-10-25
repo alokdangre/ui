@@ -30,6 +30,74 @@ export const scenarios: Record<string, HttpHandler[]> = {
   userActivity: [h.userActivities, h.deletedUserActivities, h.me],
   clusterDetails: [h.clusterDetails, h.clusterStatus, h.clusters],
   workloadDetails: [h.workloadDetails, h.workloadStatus, h.workloadLogs, h.workloads],
+  
+  // ITS specific scenarios
+  itsSuccess: [
+    h.login,
+    h.me,
+    h.clusters, // Normal clusters response
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+  itsError: [
+    h.login,
+    h.me,
+    h.clustersError, // Error response for clusters
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+  itsEmpty: [
+    h.login,
+    h.me,
+    h.clustersEmpty, // Empty clusters response
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+  itsTimeout: [
+    h.login,
+    h.me,
+    h.clustersTimeout, // Timeout response for clusters
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+  itsAuth: [
+    h.login,
+    h.me,
+    h.clustersAuth, // Auth error for clusters
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+  itsRateLimit: [
+    h.login,
+    h.me,
+    h.clustersRateLimit, // Rate limit error for clusters
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
 };
 
 export function applyScenarioByName(name: string) {

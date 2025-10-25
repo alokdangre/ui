@@ -185,6 +185,43 @@ export const clusters: HttpHandler = http.get('http://localhost:4000/api/new/clu
   })
 );
 
+// ITS Error scenarios
+export const clustersError: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
+  HttpResponse.json(
+    { error: 'Failed to load managed clusters' },
+    { status: 500 }
+  )
+);
+
+export const clustersEmpty: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
+  HttpResponse.json({
+    clusters: [],
+    count: 0,
+  })
+);
+
+export const clustersTimeout: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(HttpResponse.json({ error: 'Request timeout' }, { status: 408 }));
+    }, 30000); // 30 second delay to simulate timeout
+  })
+);
+
+export const clustersAuth: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
+  HttpResponse.json(
+    { error: 'Unauthorized access' },
+    { status: 401 }
+  )
+);
+
+export const clustersRateLimit: HttpHandler = http.get('http://localhost:4000/api/new/clusters', () =>
+  HttpResponse.json(
+    { error: 'Rate limit exceeded' },
+    { status: 429 }
+  )
+);
+
 export const bindingPolicies: HttpHandler = http.get('http://localhost:4000/api/bp', () =>
   HttpResponse.json({ bindingPolicies: [], count: 0 })
 );
@@ -473,6 +510,113 @@ export const workloadDetails: HttpHandler = http.get(
   }
 );
 
+// ITS Page - Import cluster
+export const importCluster: HttpHandler = http.post(
+  'http://localhost:4000/clusters/import',
+  async ({ request }) => {
+    const body = (await request.json()) as {
+      clusterName: string;
+      Region: string;
+      node: string;
+      value: string[];
+    };
+
+    return HttpResponse.json({
+      success: true,
+      message: `Cluster ${body.clusterName} imported successfully`,
+      clusterName: body.clusterName,
+    });
+  }
+);
+
+// ITS Page - Onboard cluster
+export const onboardCluster: HttpHandler = http.post(
+  'http://localhost:4000/clusters/onboard',
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const clusterNameFromQuery = url.searchParams.get('name');
+
+    let clusterNameFromBody = '';
+    try {
+      const body = (await request.json()) as { clusterName?: string };
+      clusterNameFromBody = body.clusterName || '';
+    } catch {
+      // Body might not be JSON
+    }
+
+    const clusterName = clusterNameFromQuery || clusterNameFromBody;
+
+    if (!clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message: `Cluster ${clusterName} onboarding initiated successfully`,
+      clusterName,
+    });
+  }
+);
+
+// ITS Page - Generate onboard command
+export const generateOnboardCommand: HttpHandler = http.post(
+  'http://localhost:4000/clusters/manual/generateCommand',
+  async ({ request }) => {
+    const body = (await request.json()) as { clusterName: string };
+
+    if (!body.clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      command: `clusteradm join --hub-token=mock-token-xyz --hub-apiserver=https://hub.example.com --cluster-name=${body.clusterName}`,
+      clusterName: body.clusterName,
+      success: true,
+    });
+  }
+);
+
+// ITS Page - Update cluster labels
+export const updateClusterLabels: HttpHandler = http.patch(
+  'http://localhost:4000/api/managedclusters/labels',
+  async ({ request }) => {
+    const body = (await request.json()) as {
+      contextName: string;
+      clusterName: string;
+      labels: { [key: string]: string };
+    };
+
+    if (!body.clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message: `Labels updated for cluster ${body.clusterName}`,
+      clusterName: body.clusterName,
+      labels: body.labels,
+    });
+  }
+);
+
+// ITS Page - Detach cluster
+export const detachCluster: HttpHandler = http.post(
+  'http://localhost:4000/clusters/detach',
+  async ({ request }) => {
+    const body = (await request.json()) as { clusterName: string };
+
+    if (!body.clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message: `Cluster ${body.clusterName} detached successfully`,
+      clusterName: body.clusterName,
+    });
+  }
+);
+
 export const defaultHandlers: HttpHandler[] = [
   statusReady,
   health,
@@ -492,4 +636,10 @@ export const defaultHandlers: HttpHandler[] = [
   workloadStatus,
   workloadLogs,
   workloadDetails,
+  // ITS specific handlers
+  importCluster,
+  onboardCluster,
+  generateOnboardCommand,
+  updateClusterLabels,
+  detachCluster,
 ];
