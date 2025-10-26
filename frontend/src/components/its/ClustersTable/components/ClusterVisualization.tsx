@@ -148,6 +148,23 @@ const ClusterVisualization: React.FC<ClusterVisualizationProps> = ({
   colors,
   size = 100,
 }) => {
+  // Check if canvas/WebGL should be disabled (only in Playwright test environments)
+  const isPlaywrightTesting = import.meta.env.VITE_PLAYWRIGHT_TESTING === 'true';
+  const isFirefox =
+    isPlaywrightTesting &&
+    typeof navigator !== 'undefined' &&
+    navigator.userAgent.includes('Firefox');
+  const disableCanvas = import.meta.env.VITE_DISABLE_CANVAS === 'true' || isFirefox;
+
+  // Log when canvas is disabled for debugging
+  if (disableCanvas && isPlaywrightTesting) {
+    const reason =
+      import.meta.env.VITE_DISABLE_CANVAS === 'true'
+        ? 'VITE_DISABLE_CANVAS environment variable'
+        : 'Firefox browser detected (WebGL issues in headless mode)';
+    console.info(`[INFO] ClusterVisualization Canvas/WebGL disabled via ${reason}`);
+  }
+
   // Memoize the entire scene for better performance
   const scene = useMemo(
     () => <ClusterScene available={available} isDark={isDark} colors={colors} />,
@@ -167,6 +184,43 @@ const ClusterVisualization: React.FC<ClusterVisualizationProps> = ({
     ),
     []
   );
+
+  // Render fallback for disabled canvas
+  if (disableCanvas) {
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: isDark ? '#1f2937' : '#f3f4f6',
+          borderRadius: '8px',
+          border: `2px solid ${available ? colors.success : colors.error}`,
+        }}
+        data-testid="cluster-visualization-fallback"
+      >
+        <div
+          style={{
+            width: '60%',
+            height: '60%',
+            borderRadius: '50%',
+            backgroundColor: available ? colors.success : colors.error,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '12px',
+            fontWeight: 'bold',
+          }}
+          title={available ? 'Cluster Available' : 'Cluster Unavailable'}
+        >
+          {available ? '✓' : '✗'}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ width: size, height: size }}>
