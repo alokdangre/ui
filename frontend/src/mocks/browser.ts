@@ -30,6 +30,92 @@ export const scenarios: Record<string, HttpHandler[]> = {
   userActivity: [h.userActivities, h.deletedUserActivities, h.me],
   clusterDetails: [h.clusterDetails, h.clusterStatus, h.clusters],
   workloadDetails: [h.workloadDetails, h.workloadStatus, h.workloadLogs, h.workloads],
+
+  // ITS specific scenarios
+  itsSuccess: [
+    h.login,
+    h.me,
+    h.clusters, // Normal clusters response
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+
+  // ITS action scenarios
+  itsLabelsSuccess: [
+    h.login,
+    h.me,
+    h.clusters,
+    h.k8sInfo,
+    h.updateClusterLabelsSuccess, // Successful label updates
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.detachCluster,
+  ],
+
+  itsImportSuccess: [
+    h.login,
+    h.me,
+    h.clusters,
+    h.k8sInfo,
+    h.importClusterSuccess, // Successful import
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+
+  itsImportError: [
+    h.login,
+    h.me,
+    h.clusters,
+    h.k8sInfo,
+    h.importClusterError, // Failed import
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+
+  itsDetachSuccess: [
+    h.login,
+    h.me,
+    h.clusters,
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachClusterSuccess, // Successful detach
+  ],
+
+  itsPagination: [
+    h.login,
+    h.me,
+    h.clustersPaginated, // Paginated clusters for testing
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
+
+  itsLoading: [
+    h.login,
+    h.me,
+    h.clustersDelayed, // Delayed response for loading states
+    h.k8sInfo,
+    h.importCluster,
+    h.onboardCluster,
+    h.generateOnboardCommand,
+    h.updateClusterLabels,
+    h.detachCluster,
+  ],
 };
 
 export function applyScenarioByName(name: string) {
