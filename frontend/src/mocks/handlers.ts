@@ -185,6 +185,96 @@ export const clusters: HttpHandler = http.get('http://localhost:4000/api/new/clu
   })
 );
 
+// Additional ITS API handlers for complete MSW coverage
+export const updateClusterLabelsSuccess: HttpHandler = http.patch(
+  'http://localhost:4000/api/managedclusters/labels',
+  () =>
+    HttpResponse.json({
+      success: true,
+      message: 'Labels updated successfully',
+    })
+);
+
+export const importClusterSuccess: HttpHandler = http.post(
+  'http://localhost:4000/clusters/import',
+  () =>
+    HttpResponse.json({
+      success: true,
+      message: 'Cluster imported successfully',
+    })
+);
+
+export const importClusterError: HttpHandler = http.post(
+  'http://localhost:4000/clusters/import',
+  () => HttpResponse.json({ error: 'Invalid cluster configuration' }, { status: 400 })
+);
+
+export const detachClusterSuccess: HttpHandler = http.post(
+  'http://localhost:4000/clusters/detach',
+  () =>
+    HttpResponse.json({
+      success: true,
+      message: 'Cluster detached successfully',
+    })
+);
+
+// Paginated clusters for testing pagination
+export const clustersPaginated: HttpHandler = http.get(
+  'http://localhost:4000/api/new/clusters',
+  ({ request }) => {
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const pageSize = 10;
+
+    // Generate clusters for pagination testing
+    const totalClusters = 25;
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, totalClusters);
+
+    const clusters = [];
+    for (let i = startIndex; i < endIndex; i++) {
+      clusters.push({
+        name: `cluster-${i + 1}`,
+        uid: `uid-${i + 1}`,
+        creationTimestamp: '2024-01-15T10:30:00Z',
+        labels: { environment: 'test', page: page.toString() },
+        status: { conditions: [], capacity: {} },
+        available: true,
+        joined: true,
+      });
+    }
+
+    return HttpResponse.json({
+      clusters,
+      count: totalClusters,
+      page,
+      totalPages: Math.ceil(totalClusters / pageSize),
+    });
+  }
+);
+
+// Delayed response for loading state testing
+export const clustersDelayed: HttpHandler = http.get(
+  'http://localhost:4000/api/new/clusters',
+  async () => {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return HttpResponse.json({
+      clusters: [
+        {
+          name: 'cluster1',
+          uid: 'uid-1',
+          creationTimestamp: '2024-01-15T10:30:00Z',
+          labels: { environment: 'test' },
+          status: { conditions: [], capacity: {} },
+          available: true,
+          joined: true,
+        },
+      ],
+      count: 1,
+    });
+  }
+);
+
 export const bindingPolicies: HttpHandler = http.get('http://localhost:4000/api/bp', () =>
   HttpResponse.json({ bindingPolicies: [], count: 0 })
 );
@@ -473,6 +563,113 @@ export const workloadDetails: HttpHandler = http.get(
   }
 );
 
+// ITS Page - Import cluster
+export const importCluster: HttpHandler = http.post(
+  'http://localhost:4000/clusters/import',
+  async ({ request }) => {
+    const body = (await request.json()) as {
+      clusterName: string;
+      Region: string;
+      node: string;
+      value: string[];
+    };
+
+    return HttpResponse.json({
+      success: true,
+      message: `Cluster ${body.clusterName} imported successfully`,
+      clusterName: body.clusterName,
+    });
+  }
+);
+
+// ITS Page - Onboard cluster
+export const onboardCluster: HttpHandler = http.post(
+  'http://localhost:4000/clusters/onboard',
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const clusterNameFromQuery = url.searchParams.get('name');
+
+    let clusterNameFromBody = '';
+    try {
+      const body = (await request.json()) as { clusterName?: string };
+      clusterNameFromBody = body.clusterName || '';
+    } catch {
+      // Body might not be JSON
+    }
+
+    const clusterName = clusterNameFromQuery || clusterNameFromBody;
+
+    if (!clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message: `Cluster ${clusterName} onboarding initiated successfully`,
+      clusterName,
+    });
+  }
+);
+
+// ITS Page - Generate onboard command
+export const generateOnboardCommand: HttpHandler = http.post(
+  'http://localhost:4000/clusters/manual/generateCommand',
+  async ({ request }) => {
+    const body = (await request.json()) as { clusterName: string };
+
+    if (!body.clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      command: `clusteradm join --hub-token=mock-token-xyz --hub-apiserver=https://hub.example.com --cluster-name=${body.clusterName}`,
+      clusterName: body.clusterName,
+      success: true,
+    });
+  }
+);
+
+// ITS Page - Update cluster labels
+export const updateClusterLabels: HttpHandler = http.patch(
+  'http://localhost:4000/api/managedclusters/labels',
+  async ({ request }) => {
+    const body = (await request.json()) as {
+      contextName: string;
+      clusterName: string;
+      labels: { [key: string]: string };
+    };
+
+    if (!body.clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message: `Labels updated for cluster ${body.clusterName}`,
+      clusterName: body.clusterName,
+      labels: body.labels,
+    });
+  }
+);
+
+// ITS Page - Detach cluster
+export const detachCluster: HttpHandler = http.post(
+  'http://localhost:4000/clusters/detach',
+  async ({ request }) => {
+    const body = (await request.json()) as { clusterName: string };
+
+    if (!body.clusterName) {
+      return HttpResponse.json({ error: 'Cluster name is required' }, { status: 400 });
+    }
+
+    return HttpResponse.json({
+      success: true,
+      message: `Cluster ${body.clusterName} detached successfully`,
+      clusterName: body.clusterName,
+    });
+  }
+);
+
 export const defaultHandlers: HttpHandler[] = [
   statusReady,
   health,
@@ -492,4 +689,10 @@ export const defaultHandlers: HttpHandler[] = [
   workloadStatus,
   workloadLogs,
   workloadDetails,
+  // ITS specific handlers
+  importCluster,
+  onboardCluster,
+  generateOnboardCommand,
+  updateClusterLabels,
+  detachCluster,
 ];
