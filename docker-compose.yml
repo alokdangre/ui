@@ -14,10 +14,10 @@ services:
         condition: service_healthy
     environment:
       - VITE_SKIP_PREREQUISITES_CHECK=${VITE_SKIP_PREREQUISITES_CHECK:-true}
-      - VITE_BASE_URL=${VITE_BASE_URL:-http://backend:4000}
+      - VITE_BASE_URL=${VITE_BASE_URL:-http://localhost:4000}
       - VITE_USE_MSW=${VITE_USE_MSW:-false}
       - NGINX_HOST=${NGINX_HOST:-localhost}
-      - BACKEND_URL=${BACKEND_URL:-http://backend:4000}
+      - BACKEND_URL=${BACKEND_URL:-http://localhost:4000}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 30s
@@ -32,8 +32,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - '${BACKEND_PORT:-4000}:4000'
+    network_mode: host
     volumes:
       - ~/.kube:/root/.kube:ro
       - ./backend/postgresql/migrations:/app/postgresql/migrations:ro
@@ -55,11 +54,11 @@ services:
       - ENVIRONMENT=${ENVIRONMENT:-production}
       
       # Database Configuration
-      - DATABASE_URL=postgres://authuser:authpass123@postgres:5432/authdbui?sslmode=disable
+      - DATABASE_URL=postgres://authuser:authpass123@127.0.0.1:5400/authdbui?sslmode=disable
       - DB_HEALTH_TIMEOUT=${DB_HEALTH_TIMEOUT:-5s}
       
       # Redis Configuration
-      - REDIS_HOST=redis
+      - REDIS_HOST=127.0.0.1
       - REDIS_PORT=6379
       - REDIS_HEALTH_TIMEOUT=${REDIS_HEALTH_TIMEOUT:-3s}
       
@@ -98,8 +97,6 @@ services:
       retries: 5
       start_period: 60s
     restart: unless-stopped
-    networks:
-      - kubestellar-network
 
   postgres:
     image: postgres:15-alpine
