@@ -412,7 +412,7 @@ type MockUser = {
   updated_at: string;
 };
 
-let mockUsers: MockUser[] = [
+const mockUsers: MockUser[] = [
   {
     id: 1,
     username: 'admin',
