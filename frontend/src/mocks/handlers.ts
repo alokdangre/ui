@@ -469,10 +469,7 @@ export const createUser: HttpHandler = http.post(
 
     // Check if user already exists
     if (mockUsers.some(u => u.username === body.username)) {
-      return HttpResponse.json(
-        { error: 'User already exists' },
-        { status: 400 }
-      );
+      return HttpResponse.json({ error: 'User already exists' }, { status: 400 });
     }
 
     const newUser = {
@@ -505,19 +502,13 @@ export const updateUser: HttpHandler = http.put(
 
     const userIndex = mockUsers.findIndex(u => u.username === username);
     if (userIndex === -1) {
-      return HttpResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Check if new username already exists (if username is being changed)
     if (body.username && body.username !== username) {
       if (mockUsers.some(u => u.username === body.username)) {
-        return HttpResponse.json(
-          { error: 'Username already exists' },
-          { status: 400 }
-        );
+        return HttpResponse.json({ error: 'Username already exists' }, { status: 400 });
       }
     }
 
@@ -545,10 +536,7 @@ export const updateUserPermissions: HttpHandler = http.put(
 
     const userIndex = mockUsers.findIndex(u => u.username === username);
     if (userIndex === -1) {
-      return HttpResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     mockUsers[userIndex] = {
@@ -571,10 +559,7 @@ export const getUserPermissions: HttpHandler = http.get(
     const user = mockUsers.find(u => u.username === username);
 
     if (!user) {
-      return HttpResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     return HttpResponse.json({
@@ -590,18 +575,12 @@ export const deleteUser: HttpHandler = http.delete(
     const userIndex = mockUsers.findIndex(u => u.username === username);
 
     if (userIndex === -1) {
-      return HttpResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return HttpResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Prevent deleting admin user
     if (mockUsers[userIndex].username === 'admin') {
-      return HttpResponse.json(
-        { error: 'Cannot delete admin user' },
-        { status: 403 }
-      );
+      return HttpResponse.json({ error: 'Cannot delete admin user' }, { status: 403 });
     }
 
     mockUsers.splice(userIndex, 1);
