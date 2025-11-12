@@ -154,7 +154,7 @@ test.describe('User Management - Update Operations', () => {
     expect(await userManagementPage.userExists('testuser')).toBeFalsy();
   });
 
-  test('should update user password successfully', async ({ page }) => {
+  test('should update user password successfully', async () => {
     await userManagementPage.clickEditUser('testuser');
     await userManagementPage.fillUserForm({
       username: 'testuser',
