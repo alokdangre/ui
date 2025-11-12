@@ -80,7 +80,7 @@ test.describe('User Management - Search Functionality', () => {
     expect(countAd).toBeLessThanOrEqual(countA);
   });
 
-  test('should maintain search term after refresh', async ({ page }) => {
+  test('should maintain search term after refresh', async () => {
     await userManagementPage.searchUsers('admin');
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -163,7 +163,7 @@ test.describe('User Management - Filter Functionality', () => {
     expect(allCount).toBeGreaterThanOrEqual(filteredCount);
   });
 
-  test('should persist filter selection', async ({ page }) => {
+  test('should persist filter selection', async () => {
     await userManagementPage.setRoleFilter('admin');
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -176,16 +176,17 @@ test.describe('User Management - Filter Functionality', () => {
     expect(userCount).toBeGreaterThan(0);
   });
 
-  test('should show filter count badge', async ({ page }) => {
+  test('should show filter count badge', async () => {
     await userManagementPage.setRoleFilter('admin');
     await userManagementPage.page.waitForTimeout(1000);
 
     // Look for filter badge or indicator
-    const filterBadge = page.locator('[data-testid="filter-badge"], .filter-badge');
-    const badgeExists = await filterBadge.count();
+    const filterBadgeCount = await userManagementPage.page
+      .locator('[data-testid="filter-badge"], .filter-badge')
+      .count();
 
     // Badge might or might not be implemented, so we just check it doesn't error
-    expect(badgeExists).toBeGreaterThanOrEqual(0);
+    expect(filterBadgeCount).toBeGreaterThanOrEqual(0);
   });
 });
 
@@ -330,7 +331,7 @@ test.describe('User Management - Pagination and Performance', () => {
     await userManagementPage.goto();
   });
 
-  test('should load users quickly', async ({ page }) => {
+  test('should load users quickly', async () => {
     const startTime = Date.now();
     await userManagementPage.goto();
     await userManagementPage.waitForPageLoad();
