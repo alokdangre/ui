@@ -88,7 +88,10 @@ export class UserManagementPage extends BasePage {
   async waitForPageLoad() {
     await this.page.waitForLoadState('domcontentloaded');
     await Promise.race([
-      this.userRows.first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
+      this.userRows
+        .first()
+        .waitFor({ state: 'visible', timeout: 10000 })
+        .catch(() => {}),
       this.emptyState.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
       this.userTable.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {}),
     ]);
@@ -98,7 +101,6 @@ export class UserManagementPage extends BasePage {
     await this.searchInput.fill(searchTerm);
     await this.page.waitForTimeout(500); // Wait for debounce
   }
-
 
   async clearSearch() {
     await this.searchInput.clear();
@@ -217,12 +219,15 @@ export class UserManagementPage extends BasePage {
     await this.confirmDeleteUser();
   }
 
-  async editUser(username: string, data: {
-    username?: string;
-    password?: string;
-    confirmPassword?: string;
-    isAdmin?: boolean;
-  }) {
+  async editUser(
+    username: string,
+    data: {
+      username?: string;
+      password?: string;
+      confirmPassword?: string;
+      isAdmin?: boolean;
+    }
+  ) {
     await this.clickEditUser(username);
     await this.fillUserForm({
       username: data.username || username,
