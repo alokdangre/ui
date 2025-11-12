@@ -166,12 +166,12 @@ test.describe('User Management - Permission Management', () => {
     
     // Try to find permission controls
     const permissionControls = page.locator('[data-component="dashboard"]').first();
-    const controlCount = await permissionControls.count();
-    
-    if (controlCount > 0) {
-      // If controls exist, they should be disabled
-      const isDisabled = await permissionControls.isDisabled().catch(() => true);
-      expect(isDisabled).toBeTruthy();
+    const permissionRadio = permissionControls.locator('input[data-permission-level]');
+    const radioCount = await permissionRadio.count();
+
+    if (radioCount > 0) {
+      // Radios should be disabled when admin is selected
+      await expect(permissionRadio).toBeDisabled();
     }
   });
 
