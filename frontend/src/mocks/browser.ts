@@ -129,6 +129,18 @@ export const scenarios: Record<string, HttpHandler[]> = {
     h.wdsGetContextAbs,
     h.wdsGetContextRel,
   ],
+
+  // User Management specific scenario
+  userManagement: [
+    h.login,
+    h.me,
+    h.userActivities,
+    h.createUser,
+    h.updateUser,
+    h.updateUserPermissions,
+    h.getUserPermissions,
+    h.deleteUser,
+  ],
 };
 
 export function applyScenarioByName(name: string) {
