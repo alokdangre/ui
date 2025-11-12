@@ -21,7 +21,7 @@ test.describe('User Management - Create Operations', () => {
 
   test('should create a new regular user successfully', async () => {
     const newUsername = `testuser_${Date.now()}`;
-    
+
     await userManagementPage.addUser({
       username: newUsername,
       password: 'password123',
@@ -38,7 +38,7 @@ test.describe('User Management - Create Operations', () => {
 
   test('should create a new admin user successfully', async () => {
     const newUsername = `admin_${Date.now()}`;
-    
+
     await userManagementPage.addUser({
       username: newUsername,
       password: 'password123',
@@ -122,7 +122,7 @@ test.describe('User Management - Create Operations', () => {
 
     // Reopen modal
     await userManagementPage.clickAddUser();
-    
+
     // Form should be empty
     await expect(userManagementPage.usernameInput).toHaveValue('');
   });
@@ -144,7 +144,7 @@ test.describe('User Management - Update Operations', () => {
 
   test('should update user username successfully', async () => {
     const newUsername = `updated_${Date.now()}`;
-    
+
     await userManagementPage.editUser('testuser', {
       username: newUsername,
     });
