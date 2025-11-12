@@ -42,7 +42,9 @@ test.describe('User Management - Core Functionality', () => {
 
   test('should show admin badge for admin users', async () => {
     const adminRow = userManagementPage.getUserRow('admin');
-    await expect(adminRow.locator('[data-testid="user-role-badge"]').first()).toContainText(/admin/i);
+    await expect(adminRow.locator('[data-testid="user-role-badge"]').first()).toContainText(
+      /admin/i
+    );
   });
 
   test('should not show admin badge for regular users', async () => {
@@ -111,7 +113,7 @@ test.describe('User Management - Core Functionality', () => {
     await expect(userManagementPage.deleteModal).toBeVisible();
     await userManagementPage.cancelDeleteUser();
     await expect(userManagementPage.deleteModal).not.toBeVisible();
-    
+
     // Verify user still exists
     expect(await userManagementPage.userExists('testuser')).toBeTruthy();
   });
