@@ -91,7 +91,7 @@ test.describe('User Management - Core Functionality', () => {
     await expect(userManagementPage.filterPanel).not.toBeVisible();
   });
 
-  test('should display user actions (edit/delete) for each user', async ({ page }) => {
+  test('should display user actions (edit/delete) for each user', async () => {
     const userRow = userManagementPage.getUserRow('testuser');
     await expect(userRow.getByRole('button', { name: /Edit/i })).toBeVisible();
     await expect(userRow.getByRole('button', { name: /Delete/i })).toBeVisible();
@@ -125,7 +125,7 @@ test.describe('User Management - Core Functionality', () => {
     await userManagementPage.verifyUserTableVisible();
   });
 
-  test('should display user information in table', async ({ page }) => {
+  test('should display user information in table', async () => {
     const userRow = userManagementPage.getUserRow('admin');
     await expect(userRow).toContainText('admin');
   });
