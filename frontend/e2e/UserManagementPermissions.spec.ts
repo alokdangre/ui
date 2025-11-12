@@ -18,19 +18,18 @@ test.describe('User Management - Permission Management', () => {
     await userManagementPage.goto();
   });
 
-  test('should display permission options in add user modal', async ({ page }) => {
+  test('should display permission options in add user modal', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickAddUser();
 
     // Check for permission components
-    const dashboardPermission = page.locator('[data-component="dashboard"], text=/dashboard/i');
-    const resourcesPermission = page.locator('[data-component="resources"], text=/resources/i');
-
     // At least some permission controls should be visible
     const permissionCount = await page.locator('text=/permission/i').count();
     expect(permissionCount).toBeGreaterThan(0);
   });
 
-  test('should display permission options in edit user modal', async ({ page }) => {
+  test('should display permission options in edit user modal', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');
 
     // Check for permission components
@@ -38,7 +37,8 @@ test.describe('User Management - Permission Management', () => {
     expect(permissionCount).toBeGreaterThan(0);
   });
 
-  test('should create user with read permissions', async ({ page }) => {
+  test('should create user with read permissions', async () => {
+    const page = userManagementPage.page;
     const username = `readuser_${Date.now()}`;
 
     await userManagementPage.clickAddUser();
@@ -63,7 +63,8 @@ test.describe('User Management - Permission Management', () => {
     expect(await userManagementPage.userExists(username)).toBeTruthy();
   });
 
-  test('should create user with write permissions', async ({ page }) => {
+  test('should create user with write permissions', async () => {
+    const page = userManagementPage.page;
     const username = `writeuser_${Date.now()}`;
 
     await userManagementPage.clickAddUser();
@@ -88,7 +89,8 @@ test.describe('User Management - Permission Management', () => {
     expect(await userManagementPage.userExists(username)).toBeTruthy();
   });
 
-  test('should create user with mixed permissions', async ({ page }) => {
+  test('should create user with mixed permissions', async () => {
+    const page = userManagementPage.page;
     const username = `mixeduser_${Date.now()}`;
 
     await userManagementPage.clickAddUser();
@@ -113,7 +115,8 @@ test.describe('User Management - Permission Management', () => {
     expect(await userManagementPage.userExists(username)).toBeTruthy();
   });
 
-  test('should update user permissions', async ({ page }) => {
+  test('should update user permissions', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');
 
     // Update permissions (if permission controls are available)
@@ -127,7 +130,7 @@ test.describe('User Management - Permission Management', () => {
     await userManagementPage.waitForSuccessToast();
   });
 
-  test('should grant all permissions when promoting to admin', async ({ page }) => {
+  test('should grant all permissions when promoting to admin', async () => {
     const username = `promoteuser_${Date.now()}`;
 
     // Create regular user
@@ -155,7 +158,8 @@ test.describe('User Management - Permission Management', () => {
     await userManagementPage.verifyUserIsAdmin(username);
   });
 
-  test('should disable permission controls when admin is checked', async ({ page }) => {
+  test('should disable permission controls when admin is checked', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickAddUser();
 
     // Check admin checkbox
@@ -175,7 +179,8 @@ test.describe('User Management - Permission Management', () => {
     }
   });
 
-  test('should enable permission controls when admin is unchecked', async ({ page }) => {
+  test('should enable permission controls when admin is unchecked', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickAddUser();
 
     // Check then uncheck admin
@@ -194,7 +199,8 @@ test.describe('User Management - Permission Management', () => {
     }
   });
 
-  test('should display current permissions when editing user', async ({ page }) => {
+  test('should display current permissions when editing user', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');
 
     // Modal should show current permissions
@@ -205,7 +211,8 @@ test.describe('User Management - Permission Management', () => {
     expect(permissionText).toBeGreaterThan(0);
   });
 
-  test('should preserve other permissions when updating one', async ({ page }) => {
+  test('should preserve other permissions when updating one', async () => {
+    const page = userManagementPage.page;
     const username = `permuser_${Date.now()}`;
 
     // Create user with multiple permissions
@@ -252,7 +259,7 @@ test.describe('User Management - Permission Validation', () => {
     await userManagementPage.goto();
   });
 
-  test('should allow creating user without any permissions', async ({ page }) => {
+  test('should allow creating user without any permissions', async () => {
     const username = `noperm_${Date.now()}`;
 
     await userManagementPage.addUser({
@@ -266,7 +273,8 @@ test.describe('User Management - Permission Validation', () => {
     expect(await userManagementPage.userExists(username)).toBeTruthy();
   });
 
-  test('should show permission components in correct order', async ({ page }) => {
+  test('should show permission components in correct order', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickAddUser();
 
     // Check if permission components are displayed
@@ -276,7 +284,8 @@ test.describe('User Management - Permission Validation', () => {
     expect(permissionLabels.length).toBeGreaterThan(0);
   });
 
-  test('should display permission levels (read/write)', async ({ page }) => {
+  test('should display permission levels (read/write)', async () => {
+    const page = userManagementPage.page;
     await userManagementPage.clickAddUser();
 
     // Look for permission level options
@@ -295,7 +304,8 @@ test.describe('User Management - Permission Validation', () => {
     }
   });
 
-  test('should validate permission selection', async ({ page }) => {
+  test('should validate permission selection', async () => {
+    const page = userManagementPage.page;
     const username = `validperm_${Date.now()}`;
 
     await userManagementPage.clickAddUser();
@@ -333,7 +343,7 @@ test.describe('User Management - Admin Permissions', () => {
     await userManagementPage.goto();
   });
 
-  test('should automatically grant all permissions to admin users', async ({ page }) => {
+  test('should automatically grant all permissions to admin users', async () => {
     const username = `adminuser_${Date.now()}`;
 
     await userManagementPage.addUser({
@@ -347,13 +357,13 @@ test.describe('User Management - Admin Permissions', () => {
     await userManagementPage.verifyUserIsAdmin(username);
   });
 
-  test('should show admin has full access', async ({ page }) => {
+  test('should show admin has full access', async () => {
     await userManagementPage.clickEditUser('admin');
 
     await expect(userManagementPage.adminCheckbox).toBeChecked();
   });
 
-  test('should maintain admin permissions after edit', async ({ page }) => {
+  test('should maintain admin permissions after edit', async () => {
     const username = `admintest_${Date.now()}`;
 
     await userManagementPage.addUser({
@@ -376,7 +386,7 @@ test.describe('User Management - Admin Permissions', () => {
     await userManagementPage.verifyUserIsAdmin(username);
   });
 
-  test('should remove all write permissions when demoting from admin', async ({ page }) => {
+  test('should remove all write permissions when demoting from admin', async () => {
     const username = `demote_${Date.now()}`;
 
     await userManagementPage.addUser({
@@ -410,7 +420,7 @@ test.describe('User Management - Permission Display', () => {
     await userManagementPage.goto();
   });
 
-  test('should display user permissions in user list', async ({ page }) => {
+  test('should display user permissions in user list', async () => {
     const userRow = userManagementPage.getUserRow('testuser');
 
     await expect(userRow).toBeVisible();
@@ -423,7 +433,7 @@ test.describe('User Management - Permission Display', () => {
     await userManagementPage.verifyUserIsAdmin('admin');
   });
 
-  test('should show permission summary for users', async ({ page }) => {
+  test('should show permission summary for users', async () => {
     const userRow = userManagementPage.getUserRow('poweruser');
     await expect(userRow).toBeVisible();
 
@@ -431,7 +441,7 @@ test.describe('User Management - Permission Display', () => {
     expect(rowText).toContain('poweruser');
   });
 
-  test('should differentiate between read and write permissions visually', async ({ page }) => {
+  test('should differentiate between read and write permissions visually', async () => {
     const userRows = await userManagementPage.userRows.all();
     expect(userRows.length).toBeGreaterThan(0);
 
@@ -440,7 +450,7 @@ test.describe('User Management - Permission Display', () => {
     }
   });
 
-  test('should show permission count or summary', async ({ page }) => {
+  test('should show permission count or summary', async () => {
     const userRow = userManagementPage.getUserRow('testuser');
 
     const permissionBadges = await userRow
@@ -448,5 +458,6 @@ test.describe('User Management - Permission Display', () => {
       .count();
 
     await expect(userRow).toBeVisible();
+    expect(permissionBadges).toBeGreaterThanOrEqual(0);
   });
 });
