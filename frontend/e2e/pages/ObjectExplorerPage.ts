@@ -52,15 +52,24 @@ export class ObjectExplorerPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.pageTitle = page.locator('h1, h4').filter({ hasText: /resources|object/i }).first();
+    this.pageTitle = page
+      .locator('h1, h4')
+      .filter({ hasText: /resources|object/i })
+      .first();
     this.pageDescription = page.locator('text=/explore.*resources|filter.*objects/i').first();
     this.refreshButton = page.getByRole('button', { name: /refresh/i });
-    this.filterToggleButton = page.getByRole('button').filter({ has: page.locator('[data-testid="TuneIcon"]') }).first();
+    this.filterToggleButton = page
+      .getByRole('button')
+      .filter({ has: page.locator('[data-testid="TuneIcon"]') })
+      .first();
     this.autoRefreshSwitch = page.getByRole('checkbox', { name: /auto.*refresh/i });
     this.gridViewButton = page.locator('[value="grid"]').first();
     this.listViewButton = page.locator('[value="list"]').first();
     this.tableViewButton = page.locator('[value="table"]').first();
-    this.filterSection = page.locator('div').filter({ hasText: /object selection|filters/i }).first();
+    this.filterSection = page
+      .locator('div')
+      .filter({ hasText: /object selection|filters/i })
+      .first();
     this.kindAutocomplete = page.locator('[role="combobox"]').first();
     this.kindInput = page.locator('input[role="combobox"]').first();
     this.namespaceSelect = page.getByRole('combobox', { name: 'Select Namespace' });
@@ -68,16 +77,29 @@ export class ObjectExplorerPage extends BasePage {
     this.quickSearchClearButton = this.quickSearchInput.locator('..').getByRole('button').last();
     this.resultsSection = page.locator('[class*="results"]').first();
     this.resultsHeader = page.locator('text=/results/i').first();
-    this.resultsCount = page.locator('.MuiChip-root').filter({ hasText: /\d+\s*object/i }).first();
-    this.sortBySelect = page.locator('select, [role="combobox"]').filter({ hasText: /name|kind|namespace/i }).first();
-    this.resourceCards = page.locator('.MuiGrid-item .MuiCard-root, .MuiGrid-item .MuiPaper-root').filter({ visible: true });
-    this.resourceListItems = page.locator('[class*="list-item"]').filter({ has: page.locator('text=/pod|deployment|service/i') });
+    this.resultsCount = page
+      .locator('.MuiChip-root')
+      .filter({ hasText: /\d+\s*object/i })
+      .first();
+    this.sortBySelect = page
+      .locator('select, [role="combobox"]')
+      .filter({ hasText: /name|kind|namespace/i })
+      .first();
+    this.resourceCards = page
+      .locator('.MuiGrid-item .MuiCard-root, .MuiGrid-item .MuiPaper-root')
+      .filter({ visible: true });
+    this.resourceListItems = page
+      .locator('[class*="list-item"]')
+      .filter({ has: page.locator('text=/pod|deployment|service/i') });
     this.resourceTableRows = page.locator('tbody tr');
     this.paginationContainer = page.locator('[class*="pagination"]').first();
     this.previousPageButton = page.getByRole('button', { name: /previous|prev/i });
     this.nextPageButton = page.getByRole('button', { name: /next/i });
     this.pageNumbers = page.locator('[class*="page"]').filter({ hasText: /^\d+$/ });
-    this.bulkActionsBar = page.locator('.MuiPaper-root').filter({ hasText: /selected|bulk/i }).first();
+    this.bulkActionsBar = page
+      .locator('.MuiPaper-root')
+      .filter({ hasText: /selected|bulk/i })
+      .first();
     this.clearSelectionButton = page.getByRole('button', { name: /clear.*selection/i });
     this.bulkViewButton = page.getByRole('button', { name: /view.*details/i });
     this.bulkExportButton = page.getByRole('button', { name: /export/i });
@@ -85,7 +107,10 @@ export class ObjectExplorerPage extends BasePage {
     this.loadingSpinner = page.locator('[class*="loading"], [class*="spinner"]').first();
     this.detailsPanel = page.locator('[role="dialog"], .MuiDrawer-root, .details-panel').first();
     this.detailsPanelCloseButton = this.detailsPanel.getByRole('button', { name: /close/i });
-    this.summaryTab = page.locator('[role="tab"]').filter({ hasText: /summary/i }).first();
+    this.summaryTab = page
+      .locator('[role="tab"]')
+      .filter({ hasText: /summary/i })
+      .first();
     this.editTab = page.locator('[role="tab"]').filter({ hasText: /edit/i }).first();
     this.logsTab = page.locator('[role="tab"]').filter({ hasText: /logs/i }).first();
     this.yamlEditor = page.locator('.monaco-editor, textarea, pre').first();
@@ -97,7 +122,7 @@ export class ObjectExplorerPage extends BasePage {
       await super.goto('/resources');
       await this.waitForLoadState();
     } catch (error) {
-      console.warn('Navigation timeout, retrying...');
+      console.warn('Navigation timeout, retrying...', error);
       await this.page.goto(`${this.BASE_URL}/resources`, { timeout: 60000 });
       await this.waitForLoadState();
     }
@@ -183,12 +208,16 @@ export class ObjectExplorerPage extends BasePage {
       .filter({ hasText: kind })
       .first();
     if (await kindChip.isVisible().catch(() => false)) {
-      const deleteButton = kindChip.locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]').first();
+      const deleteButton = kindChip
+        .locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]')
+        .first();
       await deleteButton.waitFor({ state: 'visible', timeout: 5000 });
       await deleteButton.click();
     } else {
       const generalChip = this.page.locator('.MuiChip-root').filter({ hasText: kind }).first();
-      const deleteButton = generalChip.locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]').first();
+      const deleteButton = generalChip
+        .locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]')
+        .first();
       await deleteButton.waitFor({ state: 'visible', timeout: 5000 });
       await deleteButton.click();
     }
@@ -202,12 +231,16 @@ export class ObjectExplorerPage extends BasePage {
       .filter({ hasText: namespace })
       .first();
     if (await namespaceChip.isVisible().catch(() => false)) {
-      const deleteButton = namespaceChip.locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]').first();
+      const deleteButton = namespaceChip
+        .locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]')
+        .first();
       await deleteButton.waitFor({ state: 'visible', timeout: 5000 });
       await deleteButton.click();
     } else {
       const generalChip = this.page.locator('.MuiChip-root').filter({ hasText: namespace }).first();
-      const deleteButton = generalChip.locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]').first();
+      const deleteButton = generalChip
+        .locator('.MuiChip-deleteIcon, [data-testid="CancelIcon"]')
+        .first();
       await deleteButton.waitFor({ state: 'visible', timeout: 5000 });
       await deleteButton.click();
     }
@@ -234,9 +267,12 @@ export class ObjectExplorerPage extends BasePage {
   }
 
   async changeViewMode(mode: 'grid' | 'list' | 'table') {
-    const button = mode === 'grid' ? this.gridViewButton : 
-                   mode === 'list' ? this.listViewButton : 
-                   this.tableViewButton;
+    const button =
+      mode === 'grid'
+        ? this.gridViewButton
+        : mode === 'list'
+          ? this.listViewButton
+          : this.tableViewButton;
     await button.waitFor({ state: 'visible', timeout: 10000 });
     await button.click();
     await this.page.waitForTimeout(500);
@@ -255,9 +291,8 @@ export class ObjectExplorerPage extends BasePage {
   async waitForResources(timeout: number = 10000) {
     await Promise.race([
       this.resultsCount.waitFor({ state: 'visible', timeout }),
-      this.page.waitForTimeout(timeout)
-    ]).catch(() => {
-    });
+      this.page.waitForTimeout(timeout),
+    ]).catch(() => {});
     await this.page.waitForTimeout(1000);
   }
 
@@ -336,7 +371,9 @@ export class ObjectExplorerPage extends BasePage {
     await cards.nth(index).click();
     await this.page.waitForTimeout(1000);
     let detailsOpened = false;
-    const detailsPanel = this.page.locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root').first();
+    const detailsPanel = this.page
+      .locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root')
+      .first();
     detailsOpened = await detailsPanel.isVisible().catch(() => false);
     if (!detailsOpened) {
       await cards.nth(index).dblclick();
@@ -344,9 +381,13 @@ export class ObjectExplorerPage extends BasePage {
       detailsOpened = await detailsPanel.isVisible().catch(() => false);
     }
     if (!detailsOpened) {
-      const viewButton = cards.nth(index).locator('button').filter({ 
-        has: this.page.locator('[data-testid="VisibilityIcon"], .fa-eye, [class*="eye"]') 
-      }).first();
+      const viewButton = cards
+        .nth(index)
+        .locator('button')
+        .filter({
+          has: this.page.locator('[data-testid="VisibilityIcon"], .fa-eye, [class*="eye"]'),
+        })
+        .first();
       if (await viewButton.isVisible().catch(() => false)) {
         await viewButton.click();
         await this.page.waitForTimeout(1000);
@@ -354,8 +395,16 @@ export class ObjectExplorerPage extends BasePage {
       }
     }
     if (!detailsOpened) {
-      const hasDetailsContent = await this.page.locator('text=/summary|edit|logs|yaml|overview/i').first().isVisible().catch(() => false);
-      const hasTabs = await this.page.locator('[role="tab"], .MuiTab-root').first().isVisible().catch(() => false);
+      const hasDetailsContent = await this.page
+        .locator('text=/summary|edit|logs|yaml|overview/i')
+        .first()
+        .isVisible()
+        .catch(() => false);
+      const hasTabs = await this.page
+        .locator('[role="tab"], .MuiTab-root')
+        .first()
+        .isVisible()
+        .catch(() => false);
       detailsOpened = hasDetailsContent || hasTabs;
     }
     if (!detailsOpened) {
@@ -370,22 +419,21 @@ export class ObjectExplorerPage extends BasePage {
   }
 
   async switchToTab(tabName: 'summary' | 'edit' | 'logs') {
-    const tab = tabName === 'summary' ? this.summaryTab :
-                tabName === 'edit' ? this.editTab :
-                this.logsTab;
+    const tab =
+      tabName === 'summary' ? this.summaryTab : tabName === 'edit' ? this.editTab : this.logsTab;
     await tab.click();
     await this.page.waitForTimeout(1000);
   }
 
   async getYamlContent(): Promise<string> {
     await this.switchToTab('edit');
-    return await this.yamlEditor.textContent() || '';
+    return (await this.yamlEditor.textContent()) || '';
   }
 
   async getLogsContent(): Promise<string> {
     await this.switchToTab('logs');
     await this.page.waitForTimeout(2000);
-    return await this.logsContainer.textContent() || '';
+    return (await this.logsContainer.textContent()) || '';
   }
 
   async monitorWebSocketConnections(): Promise<string[]> {
@@ -462,7 +510,7 @@ export class ObjectExplorerPage extends BasePage {
   async changeSortBy(sortBy: string) {
     await this.sortBySelect.click();
     await this.page.waitForTimeout(300);
-    
+
     const option = this.page.locator('[role="option"]').filter({ hasText: sortBy }).first();
     await option.click();
     await this.page.waitForTimeout(500);
