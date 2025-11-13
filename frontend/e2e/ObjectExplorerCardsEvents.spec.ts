@@ -32,14 +32,22 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     const firstCard = page.locator('.MuiGrid-item .MuiCard-root').first();
     await expect(firstCard).toBeVisible();
 
-    const initialBulkActions = await page.locator('.bulk-actions, [class*="bulk"], .MuiPaper-root').filter({ hasText: /selected|bulk/i }).first().isVisible().catch(() => false);
+    const initialBulkActions = await page
+      .locator('.bulk-actions, [class*="bulk"], .MuiPaper-root')
+      .filter({ hasText: /selected|bulk/i })
+      .first()
+      .isVisible()
+      .catch(() => false);
 
     await firstCard.click();
     await page.waitForTimeout(1500);
 
     let cardInteractionWorked = false;
 
-    const bulkActions = page.locator('.bulk-actions, [class*="bulk"], .MuiPaper-root').filter({ hasText: /selected|bulk/i }).first();
+    const bulkActions = page
+      .locator('.bulk-actions, [class*="bulk"], .MuiPaper-root')
+      .filter({ hasText: /selected|bulk/i })
+      .first();
     const isBulkVisible = await bulkActions.isVisible().catch(() => false);
     if (isBulkVisible && !initialBulkActions) {
       cardInteractionWorked = true;
@@ -50,14 +58,16 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
         const styles = window.getComputedStyle(el);
         const computedBorder = styles.border || styles.borderWidth || styles.borderColor;
         const computedBg = styles.backgroundColor;
-        return computedBorder.includes('2px') || 
-               computedBorder.includes('solid') ||
-               computedBg !== 'rgba(0, 0, 0, 0)' &&
-               computedBg !== 'transparent' &&
-               computedBg !== 'rgb(255, 255, 255)' ||
-               el.classList.contains('selected') || 
-               el.classList.contains('Mui-selected') ||
-               el.getAttribute('aria-selected') === 'true';
+        return (
+          computedBorder.includes('2px') ||
+          computedBorder.includes('solid') ||
+          (computedBg !== 'rgba(0, 0, 0, 0)' &&
+            computedBg !== 'transparent' &&
+            computedBg !== 'rgb(255, 255, 255)') ||
+          el.classList.contains('selected') ||
+          el.classList.contains('Mui-selected') ||
+          el.getAttribute('aria-selected') === 'true'
+        );
       });
       if (hasSelectionStyling) {
         cardInteractionWorked = true;
@@ -65,7 +75,9 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     }
 
     if (!cardInteractionWorked) {
-      const detailsPanel = page.locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root').first();
+      const detailsPanel = page
+        .locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root')
+        .first();
       const hasDetailsPanel = await detailsPanel.isVisible().catch(() => false);
       if (hasDetailsPanel) {
         cardInteractionWorked = true;
@@ -74,7 +86,11 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
 
     if (!cardInteractionWorked) {
       const currentUrl = page.url();
-      if (currentUrl.includes('details') || currentUrl.includes('resource') || currentUrl.includes('view')) {
+      if (
+        currentUrl.includes('details') ||
+        currentUrl.includes('resource') ||
+        currentUrl.includes('view')
+      ) {
         cardInteractionWorked = true;
       }
     }
@@ -112,12 +128,14 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     await firstCard.hover();
     await page.waitForTimeout(500);
 
-    const actionButtons = firstCard.locator('button').filter({ 
-      has: page.locator('svg, .fa-ellipsis, [data-testid="MoreVertIcon"], [data-testid="VisibilityIcon"]') 
+    const actionButtons = firstCard.locator('button').filter({
+      has: page.locator(
+        'svg, .fa-ellipsis, [data-testid="MoreVertIcon"], [data-testid="VisibilityIcon"]'
+      ),
     });
 
     const buttonCount = await actionButtons.count();
-    
+
     if (buttonCount > 0) {
       await expect(actionButtons.first()).toBeVisible();
     }
@@ -127,9 +145,12 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     const firstCard = page.locator('.MuiGrid-item .MuiCard-root').first();
     await expect(firstCard).toBeVisible();
 
-    const actionButton = firstCard.locator('button').filter({ 
-      has: page.locator('svg, .fa-ellipsis, [data-testid="MoreVertIcon"]') 
-    }).first();
+    const actionButton = firstCard
+      .locator('button')
+      .filter({
+        has: page.locator('svg, .fa-ellipsis, [data-testid="MoreVertIcon"]'),
+      })
+      .first();
 
     if (await actionButton.isVisible().catch(() => false)) {
       await actionButton.click();
@@ -172,16 +193,21 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     let detailsOpened = false;
     let interactionAttempted = false;
 
-    const viewButton = firstCard.locator('button').filter({ 
-      has: page.locator('[data-testid="VisibilityIcon"], .fa-eye') 
-    }).first();
+    const viewButton = firstCard
+      .locator('button')
+      .filter({
+        has: page.locator('[data-testid="VisibilityIcon"], .fa-eye'),
+      })
+      .first();
 
     if (await viewButton.isVisible().catch(() => false)) {
       await viewButton.click();
       await page.waitForTimeout(2000);
       interactionAttempted = true;
 
-      const detailsPanel = page.locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root, .MuiPaper-root').first();
+      const detailsPanel = page
+        .locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root, .MuiPaper-root')
+        .first();
       detailsOpened = await detailsPanel.isVisible().catch(() => false);
     }
 
@@ -190,7 +216,9 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
       await page.waitForTimeout(2000);
       interactionAttempted = true;
 
-      const detailsPanel = page.locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root, .MuiPaper-root').first();
+      const detailsPanel = page
+        .locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root, .MuiPaper-root')
+        .first();
       detailsOpened = await detailsPanel.isVisible().catch(() => false);
     }
 
@@ -199,26 +227,40 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
       await page.waitForTimeout(2000);
       interactionAttempted = true;
 
-      const detailsPanel = page.locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root, .MuiPaper-root').first();
+      const detailsPanel = page
+        .locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root, .MuiPaper-root')
+        .first();
       detailsOpened = await detailsPanel.isVisible().catch(() => false);
     }
 
     if (!detailsOpened) {
       const currentUrl = page.url();
-      if (currentUrl.includes('details') || currentUrl.includes('resource') || currentUrl.includes('view')) {
+      if (
+        currentUrl.includes('details') ||
+        currentUrl.includes('resource') ||
+        currentUrl.includes('view')
+      ) {
         detailsOpened = true;
       }
     }
 
     if (!detailsOpened) {
-      const hasDetailsContent = await page.locator('text=/summary|edit|logs|yaml|overview|metadata/i').first().isVisible().catch(() => false);
+      const hasDetailsContent = await page
+        .locator('text=/summary|edit|logs|yaml|overview|metadata/i')
+        .first()
+        .isVisible()
+        .catch(() => false);
       if (hasDetailsContent) {
         detailsOpened = true;
       }
     }
 
     if (!detailsOpened) {
-      const hasTabs = await page.locator('[role="tab"], .MuiTab-root').first().isVisible().catch(() => false);
+      const hasTabs = await page
+        .locator('[role="tab"], .MuiTab-root')
+        .first()
+        .isVisible()
+        .catch(() => false);
       if (hasTabs) {
         detailsOpened = true;
       }
@@ -258,6 +300,7 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
       const hasDetailsPanel = await detailsPanel.isVisible().catch(() => false);
 
       if (hasDetailsPanel) {
+        expect(hasDetailsPanel).toBe(true);
       }
     }
   });
@@ -300,7 +343,9 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
   });
 
   test('should handle card selection with checkboxes', async ({ page }) => {
-    const cardCheckboxes = page.locator('.MuiCard-root input[type="checkbox"], .MuiCard-root .MuiCheckbox-root');
+    const cardCheckboxes = page.locator(
+      '.MuiCard-root input[type="checkbox"], .MuiCard-root .MuiCheckbox-root'
+    );
     const checkboxCount = await cardCheckboxes.count();
 
     if (checkboxCount > 0) {
@@ -322,12 +367,14 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     await expect(firstCard).toBeVisible();
 
     const statusChips = firstCard.locator('.MuiChip-root');
-    const statusIcons = firstCard.locator('[data-testid="CheckCircleIcon"], [data-testid="WarningIcon"], [data-testid="ErrorIcon"]');
+    const statusIcons = firstCard.locator(
+      '[data-testid="CheckCircleIcon"], [data-testid="WarningIcon"], [data-testid="ErrorIcon"]'
+    );
     const statusText = firstCard.locator('text=/healthy|running|pending|failed|ready|error/i');
 
-    const hasStatusChips = await statusChips.count() > 0;
-    const hasStatusIcons = await statusIcons.count() > 0;
-    const hasStatusText = await statusText.count() > 0;
+    const hasStatusChips = (await statusChips.count()) > 0;
+    const hasStatusIcons = (await statusIcons.count()) > 0;
+    const hasStatusText = (await statusText.count()) > 0;
 
     const hasStatusIndicators = hasStatusChips || hasStatusIcons || hasStatusText;
     expect(hasStatusIndicators).toBe(true);
@@ -337,9 +384,12 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     const firstCard = page.locator('.MuiGrid-item .MuiCard-root').first();
     await expect(firstCard).toBeVisible();
 
-    const refreshButton = firstCard.locator('button').filter({ 
-      has: page.locator('[data-testid="RefreshIcon"], .fa-refresh, .fa-sync') 
-    }).first();
+    const refreshButton = firstCard
+      .locator('button')
+      .filter({
+        has: page.locator('[data-testid="RefreshIcon"], .fa-refresh, .fa-sync'),
+      })
+      .first();
 
     if (await refreshButton.isVisible().catch(() => false)) {
       const refreshRequests: string[] = [];
@@ -365,10 +415,8 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
       firstCard.locator('.MuiChip-root').first(),
       firstCard.locator('button').first(),
       firstCard.locator('svg').first(),
-      firstCard
+      firstCard,
     ];
-
-    let tooltipFound = false;
 
     for (const element of cardElements) {
       if (await element.isVisible().catch(() => false)) {
@@ -378,7 +426,6 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
         const tooltip = page.locator('[role="tooltip"], .MuiTooltip-tooltip').first();
         if (await tooltip.isVisible().catch(() => false)) {
           await expect(tooltip).toBeVisible();
-          tooltipFound = true;
           break;
         }
       }
@@ -389,7 +436,9 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
     const firstCard = page.locator('.MuiGrid-item .MuiCard-root').first();
     await expect(firstCard).toBeVisible();
 
-    const loadingIndicator = firstCard.locator('.MuiCircularProgress-root, .loading, .spinner').first();
+    const loadingIndicator = firstCard
+      .locator('.MuiCircularProgress-root, .loading, .spinner')
+      .first();
     await loadingIndicator.isVisible().catch(() => false);
 
     const hasTransition = await firstCard.evaluate(el => {
@@ -404,7 +453,11 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
 
     const hasActiveState = await firstCard.evaluate(el => {
       const styles = window.getComputedStyle(el);
-      return styles.transform !== 'none' || el.classList.contains('active') || el.classList.contains('pressed');
+      return (
+        styles.transform !== 'none' ||
+        el.classList.contains('active') ||
+        el.classList.contains('pressed')
+      );
     });
 
     expect(hasActiveState).toBe(true);
@@ -423,7 +476,9 @@ test.describe('Object Explorer - Card Events and Interactions', () => {
       await page.keyboard.up('Control');
       await page.waitForTimeout(500);
 
-      const selectedCards = page.locator('.MuiCard-root[aria-selected="true"], .MuiCard-root.selected');
+      const selectedCards = page.locator(
+        '.MuiCard-root[aria-selected="true"], .MuiCard-root.selected'
+      );
       const selectedCount = await selectedCards.count();
 
       if (selectedCount > 1) {
