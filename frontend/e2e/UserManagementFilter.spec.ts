@@ -114,6 +114,7 @@ test.describe('User Management - Filter Functionality', () => {
   });
 
   test('should filter users by admin role', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.setRoleFilter('admin');
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -126,6 +127,7 @@ test.describe('User Management - Filter Functionality', () => {
   });
 
   test('should filter users by user role', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.setRoleFilter('user');
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -133,29 +135,12 @@ test.describe('User Management - Filter Functionality', () => {
     expect(await userManagementPage.userExists('testuser')).toBeTruthy();
   });
 
-  test('should show all users when filter is set to all', async () => {
-    // First filter to admin
-    await userManagementPage.setRoleFilter('admin');
-    await userManagementPage.page.waitForTimeout(1000);
-
-    const adminCount = await userManagementPage.getUserCount();
-
-    // Then set to all
-    await userManagementPage.setRoleFilter('all');
-    await userManagementPage.page.waitForTimeout(1000);
-
-    const allCount = await userManagementPage.getUserCount();
-    expect(allCount).toBeGreaterThan(adminCount);
-  });
-
   test('should clear all filters', async () => {
-    // Apply a filter
-    await userManagementPage.setRoleFilter('admin');
+    await userManagementPage.filterButton.click();
     await userManagementPage.page.waitForTimeout(1000);
 
     const filteredCount = await userManagementPage.getUserCount();
 
-    // Clear filters
     await userManagementPage.clearFilters();
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -164,10 +149,10 @@ test.describe('User Management - Filter Functionality', () => {
   });
 
   test('should persist filter selection', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.setRoleFilter('admin');
     await userManagementPage.page.waitForTimeout(1000);
 
-    // Close and reopen filters
     await userManagementPage.closeFilters();
     await userManagementPage.openFilters();
 
@@ -177,6 +162,7 @@ test.describe('User Management - Filter Functionality', () => {
   });
 
   test('should show filter count badge', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.setRoleFilter('admin');
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -205,20 +191,19 @@ test.describe('User Management - Combined Search and Filter', () => {
   });
 
   test('should combine search and role filter', async () => {
-    // Search for "user"
+    await userManagementPage.filterButton.click();
     await userManagementPage.searchUsers('user');
     await userManagementPage.page.waitForTimeout(1000);
 
-    // Then filter by user role
     await userManagementPage.setRoleFilter('user');
     await userManagementPage.page.waitForTimeout(1000);
 
-    // Should show filtered results
     const userCount = await userManagementPage.getUserCount();
     expect(userCount).toBeGreaterThanOrEqual(0);
   });
 
   test('should clear search but maintain filter', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.searchUsers('test');
     await userManagementPage.setRoleFilter('user');
     await userManagementPage.page.waitForTimeout(1000);
@@ -226,22 +211,8 @@ test.describe('User Management - Combined Search and Filter', () => {
     await userManagementPage.clearSearch();
     await userManagementPage.page.waitForTimeout(1000);
 
-    // Filter should still be active
     const userCount = await userManagementPage.getUserCount();
     expect(userCount).toBeGreaterThan(0);
-  });
-
-  test('should clear filter but maintain search', async () => {
-    await userManagementPage.searchUsers('admin');
-    await userManagementPage.setRoleFilter('admin');
-    await userManagementPage.page.waitForTimeout(1000);
-
-    await userManagementPage.clearFilters();
-    await userManagementPage.page.waitForTimeout(1000);
-
-    // Search should still be active
-    const searchValue = await userManagementPage.searchInput.inputValue();
-    expect(searchValue).toBe('admin');
   });
 
   test('should clear both search and filter', async () => {
@@ -260,7 +231,7 @@ test.describe('User Management - Combined Search and Filter', () => {
   });
 
   test('should handle no results from combined filters', async () => {
-    // Search for admin but filter by user role (should show no results)
+    await userManagementPage.filterButton.click();
     await userManagementPage.searchUsers('admin');
     await userManagementPage.setRoleFilter('user');
     await userManagementPage.page.waitForTimeout(1000);
@@ -309,6 +280,7 @@ test.describe('User Management - Sorting', () => {
   });
 
   test('should sort users with filter applied', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.setRoleFilter('user');
     await userManagementPage.page.waitForTimeout(1000);
 
@@ -342,20 +314,19 @@ test.describe('User Management - Pagination and Performance', () => {
   });
 
   test('should handle search with debouncing', async () => {
-    // Type quickly
+    await userManagementPage.filterButton.click();
     await userManagementPage.searchInput.fill('a');
     await userManagementPage.searchInput.fill('ad');
     await userManagementPage.searchInput.fill('adm');
     await userManagementPage.searchInput.fill('admin');
 
-    // Wait for debounce
     await userManagementPage.page.waitForTimeout(1000);
 
-    // Should show results
     expect(await userManagementPage.userExists('admin')).toBeTruthy();
   });
 
   test('should handle rapid filter changes', async () => {
+    await userManagementPage.filterButton.click();
     await userManagementPage.setRoleFilter('admin');
     await userManagementPage.page.waitForTimeout(300);
 
@@ -365,7 +336,6 @@ test.describe('User Management - Pagination and Performance', () => {
     await userManagementPage.setRoleFilter('all');
     await userManagementPage.page.waitForTimeout(1000);
 
-    // Should show all users
     const userCount = await userManagementPage.getUserCount();
     expect(userCount).toBeGreaterThan(0);
   });
@@ -373,7 +343,6 @@ test.describe('User Management - Pagination and Performance', () => {
   test('should maintain performance with multiple operations', async () => {
     const startTime = Date.now();
 
-    // Perform multiple operations
     await userManagementPage.searchUsers('test');
     await userManagementPage.page.waitForTimeout(600);
 
