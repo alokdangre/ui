@@ -1,22 +1,39 @@
 import { test, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { UserManagementPage } from './pages/UserManagementPage';
 import { LoginPage } from './pages/LoginPage';
 import { MSWHelper } from './pages/utils/MSWHelper';
 
-test.describe('User Management - Create Operations', () => {
-  let userManagementPage: UserManagementPage;
-  let loginPage: LoginPage;
+type SetupOptions = {
+  applyScenario?: boolean;
+};
 
-  test.beforeEach(async ({ page }) => {
-    userManagementPage = new UserManagementPage(page);
-    loginPage = new LoginPage(page);
+async function setupUserManagementTest(page: Page, options: SetupOptions = {}) {
+  const loginPage = new LoginPage(page);
+  const userManagementPage = new UserManagementPage(page);
 
-    await loginPage.goto();
-    await loginPage.login('admin', 'admin');
-    await expect(page).toHaveURL('/', { timeout: 10000 });
+  await loginPage.goto();
+  await loginPage.login('admin', 'admin');
+  await expect(page).toHaveURL('/', { timeout: 10000 });
+
+  const shouldApplyScenario = options.applyScenario ?? false;
+  if (shouldApplyScenario) {
     const msw = new MSWHelper(page);
     await msw.applyScenario('userManagement');
-    await userManagementPage.goto();
+  }
+
+  await userManagementPage.goto();
+
+  return userManagementPage;
+}
+
+test.describe('User Management - Create Operations', () => {
+  let userManagementPage: UserManagementPage;
+
+  test.beforeEach(async ({ page }) => {
+    userManagementPage = await setupUserManagementTest(page, {
+      applyScenario: true,
+    });
   });
 
   test('should create a new regular user successfully', async () => {
@@ -130,16 +147,9 @@ test.describe('User Management - Create Operations', () => {
 
 test.describe('User Management - Update Operations', () => {
   let userManagementPage: UserManagementPage;
-  let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
-    userManagementPage = new UserManagementPage(page);
-    loginPage = new LoginPage(page);
-
-    await loginPage.goto();
-    await loginPage.login('admin', 'admin');
-    await expect(page).toHaveURL('/', { timeout: 10000 });
-    await userManagementPage.goto();
+    userManagementPage = await setupUserManagementTest(page);
   });
 
   test('should update user username successfully', async () => {
@@ -250,16 +260,9 @@ test.describe('User Management - Update Operations', () => {
 
 test.describe('User Management - Delete Operations', () => {
   let userManagementPage: UserManagementPage;
-  let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
-    userManagementPage = new UserManagementPage(page);
-    loginPage = new LoginPage(page);
-
-    await loginPage.goto();
-    await loginPage.login('admin', 'admin');
-    await expect(page).toHaveURL('/', { timeout: 10000 });
-    await userManagementPage.goto();
+    userManagementPage = await setupUserManagementTest(page);
   });
 
   test('should delete a user successfully', async () => {
@@ -359,16 +362,9 @@ test.describe('User Management - Delete Operations', () => {
 
 test.describe('User Management - Complex CRUD Workflows', () => {
   let userManagementPage: UserManagementPage;
-  let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
-    userManagementPage = new UserManagementPage(page);
-    loginPage = new LoginPage(page);
-
-    await loginPage.goto();
-    await loginPage.login('admin', 'admin');
-    await expect(page).toHaveURL('/', { timeout: 10000 });
-    await userManagementPage.goto();
+    userManagementPage = await setupUserManagementTest(page);
   });
 
   test('should create, update, and delete user in sequence', async () => {
