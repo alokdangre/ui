@@ -62,8 +62,7 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('label editing dialog shows existing labels', async () => {
-    await itsPage.applyScenario(msw, 'itsLabelsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLabelsSuccess');
 
     if ((await itsPage.actionButtons.count()) > 0) {
       await itsPage.actionButtons.first().click();
@@ -90,8 +89,7 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('new labels can be added in edit dialog', async () => {
-    await itsPage.applyScenario(msw, 'itsLabelsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLabelsSuccess');
 
     if ((await itsPage.actionButtons.count()) > 0) {
       await itsPage.actionButtons.first().click();
@@ -133,8 +131,7 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('labels can be deleted in edit dialog', async () => {
-    await itsPage.applyScenario(msw, 'itsLabelsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLabelsSuccess');
 
     if ((await itsPage.actionButtons.count()) > 0) {
       await itsPage.actionButtons.first().click();
@@ -210,8 +207,7 @@ test.describe('ITS Labels and Filters Tests', () => {
   });
 
   test('bulk label editing works for multiple clusters', async () => {
-    await itsPage.applyScenario(msw, 'itsLabelsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLabelsSuccess');
 
     const checkboxCount = await itsPage.rowCheckboxes.count();
 

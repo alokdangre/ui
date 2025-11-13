@@ -48,8 +48,7 @@ test.describe('ITS Table Features Tests', () => {
   });
 
   test('table pagination works with many clusters', async () => {
-    await itsPage.applyScenario(msw, 'itsPagination');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsPagination');
     await expect(itsPage.table.first()).toBeVisible({ timeout: 15000 });
 
     const paginationControls = itsPage.paginationControls;
@@ -113,8 +112,7 @@ test.describe('ITS Table Features Tests', () => {
   });
 
   test('table loading state displays during data fetch', async () => {
-    await itsPage.applyScenario(msw, 'itsLoading');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLoading');
 
     try {
       const loadingIndicator = itsPage.loadingIndicators.first();

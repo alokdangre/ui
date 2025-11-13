@@ -149,8 +149,7 @@ current-context: test-context`;
   });
 
   test('import success shows confirmation', async () => {
-    await itsPage.applyScenario(msw, 'itsImportSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsImportSuccess');
 
     await itsPage.openImportDialog();
 
@@ -172,8 +171,7 @@ current-context: test-context`;
   });
 
   test('import error shows error message', async () => {
-    await itsPage.applyScenario(msw, 'itsImportError');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsImportError');
 
     await itsPage.openImportDialog();
 

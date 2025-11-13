@@ -44,8 +44,7 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('edit labels dialog opens and works', async () => {
-    await itsPage.applyScenario(msw, 'itsLabelsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLabelsSuccess');
 
     const actionCount = await itsPage.actionButtons.count();
 
@@ -81,8 +80,7 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('view cluster details dialog opens', async () => {
-    await itsPage.applyScenario(msw, 'itsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsSuccess');
 
     const actionCount = await itsPage.actionButtons.count();
 
@@ -104,8 +102,7 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('detach cluster confirmation dialog works', async () => {
-    await itsPage.applyScenario(msw, 'itsDetachSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsDetachSuccess');
 
     const actionCount = await itsPage.actionButtons.count();
 
@@ -141,8 +138,7 @@ test.describe('ITS Cluster Actions Tests', () => {
   });
 
   test('bulk label management works with multiple selections', async () => {
-    await itsPage.applyScenario(msw, 'itsLabelsSuccess');
-    await itsPage.reload();
+    await itsPage.openWithScenario(msw, 'itsLabelsSuccess');
 
     const checkboxCount = await itsPage.rowCheckboxes.count();
 
