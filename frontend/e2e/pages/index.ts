@@ -3,6 +3,7 @@ export { BasePage } from './base/BasePage';
 export { LoginPage } from './LoginPage';
 export { UserManagementPage } from './UserManagementPage';
 export { ITSPage } from './ITSPage';
+export { ObjectExplorerPage } from './ObjectExplorerPage';
 
 // Export utilities
 export { MSWHelper } from './utils/MSWHelper';
