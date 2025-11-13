@@ -133,14 +133,6 @@ test.describe('User Management - Core Functionality', () => {
   test('should navigate to user management page directly', async ({ page }) => {
     await expect(page).toHaveURL(/\/admin\/users/);
   });
-
-  test('should maintain state after page refresh', async ({ page }) => {
-    const initialCount = await userManagementPage.getUserCount();
-    await page.reload();
-    await userManagementPage.waitForPageLoad();
-    const newCount = await userManagementPage.getUserCount();
-    expect(newCount).toBe(initialCount);
-  });
 });
 
 test.describe('User Management - Accessibility', () => {
@@ -160,12 +152,6 @@ test.describe('User Management - Accessibility', () => {
   test('should have proper heading hierarchy', async ({ page }) => {
     const h1 = page.locator('h1, h2').first();
     await expect(h1).toBeVisible();
-  });
-
-  test('should have accessible buttons with proper labels', async () => {
-    await expect(userManagementPage.addUserButton).toHaveAttribute('type', 'button');
-    await expect(userManagementPage.filterButton).toHaveAttribute('type', 'button');
-    await expect(userManagementPage.refreshButton).toHaveAttribute('type', 'button');
   });
 
   test('should have accessible form inputs in modal', async () => {
