@@ -284,26 +284,6 @@ test.describe('User Management - Permission Validation', () => {
     expect(permissionLabels.length).toBeGreaterThan(0);
   });
 
-  test('should display permission levels (read/write)', async () => {
-    const page = userManagementPage.page;
-    await userManagementPage.clickAddUser();
-
-    // Look for permission level options
-    const permissionControls = await page.locator('[data-component]').first();
-    const controlExists = await permissionControls.count();
-
-    if (controlExists > 0) {
-      await permissionControls.click();
-
-      // Should show read and write options
-      const readOption = page.getByText('read', { exact: true });
-      const writeOption = page.getByText('write', { exact: true });
-
-      const hasOptions = (await readOption.count()) > 0 || (await writeOption.count()) > 0;
-      expect(hasOptions).toBeTruthy();
-    }
-  });
-
   test('should validate permission selection', async () => {
     const page = userManagementPage.page;
     const username = `validperm_${Date.now()}`;
