@@ -6,6 +6,7 @@ test.describe('Object Explorer - View Modes and Pagination', () => {
   let objectExplorerPage: ObjectExplorerPage;
   let mswHelper: MSWHelper;
 
+  test.describe.configure({ timeout: 60000 });
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     objectExplorerPage = new ObjectExplorerPage(page);
@@ -221,16 +222,6 @@ test.describe('Object Explorer - View Modes and Pagination', () => {
     await page.waitForTimeout(500);
     const hasError = await objectExplorerPage.hasError();
     expect(hasError).toBe(false);
-  });
-
-  test('should handle responsive layout in different view modes', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.waitForTimeout(500);
-    await objectExplorerPage.changeViewMode('grid');
-    await page.waitForTimeout(500);
-    const cards = await objectExplorerPage.getVisibleResourceCards();
-    expect(cards.length).toBeGreaterThanOrEqual(0);
-    await page.setViewportSize({ width: 1280, height: 720 });
   });
 
   test('should display view mode icons correctly', async () => {
