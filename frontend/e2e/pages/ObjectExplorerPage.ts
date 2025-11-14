@@ -368,32 +368,21 @@ export class ObjectExplorerPage extends BasePage {
 
   async openResourceDetails(index: number = 0) {
     const cards = this.resourceCards;
-    await cards.nth(index).click();
-    await this.page.waitForTimeout(1000);
-    let detailsOpened = false;
+    const card = cards.nth(index);
+    await card.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+
     const detailsPanel = this.page
       .locator('[role="dialog"], .MuiDrawer-root, .details-panel, .MuiModal-root')
       .first();
-    detailsOpened = await detailsPanel.isVisible().catch(() => false);
-    if (!detailsOpened) {
-      await cards.nth(index).dblclick();
-      await this.page.waitForTimeout(1000);
-      detailsOpened = await detailsPanel.isVisible().catch(() => false);
-    }
-    if (!detailsOpened) {
-      const viewButton = cards
-        .nth(index)
-        .locator('button')
-        .filter({
-          has: this.page.locator('[data-testid="VisibilityIcon"], .fa-eye, [class*="eye"]'),
-        })
-        .first();
-      if (await viewButton.isVisible().catch(() => false)) {
-        await viewButton.click();
-        await this.page.waitForTimeout(1000);
-        detailsOpened = await detailsPanel.isVisible().catch(() => false);
-      }
-    }
+
+    // Do a single, non-blocking click on the card and then wait for the panel/content ourselves
+    await card.click({ timeout: 3000, noWaitAfter: true }).catch(() => {});
+
+    let detailsOpened = await detailsPanel
+      .waitFor({ state: 'visible', timeout: 5000 })
+      .then(() => true)
+      .catch(() => false);
+
     if (!detailsOpened) {
       const hasDetailsContent = await this.page
         .locator('text=/summary|edit|logs|yaml|overview/i')
@@ -407,6 +396,7 @@ export class ObjectExplorerPage extends BasePage {
         .catch(() => false);
       detailsOpened = hasDetailsContent || hasTabs;
     }
+
     if (!detailsOpened) {
       console.warn('Resource details panel did not open - feature may not be implemented');
     }

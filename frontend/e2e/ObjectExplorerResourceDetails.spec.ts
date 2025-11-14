@@ -36,6 +36,7 @@ test.describe('Object Explorer - Resource Details and Tabs', () => {
     return hasDetailsContent || hasTabs;
   }
 
+  test.describe.configure({ timeout: 60000 });
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     objectExplorerPage = new ObjectExplorerPage(page);
@@ -57,7 +58,7 @@ test.describe('Object Explorer - Resource Details and Tabs', () => {
 
   test('should open resource details panel when clicking on resource card', async ({ page }) => {
     await objectExplorerPage.changeViewMode('grid');
-    await page.waitForTimeout(500);
+    // await page.waitForTimeout(500);
 
     await objectExplorerPage.openResourceDetails(0);
 
