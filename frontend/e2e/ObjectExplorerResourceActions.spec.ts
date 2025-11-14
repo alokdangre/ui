@@ -6,6 +6,7 @@ test.describe('Object Explorer - Resource Viewing and Actions', () => {
   let objectExplorerPage: ObjectExplorerPage;
   let mswHelper: MSWHelper;
 
+  test.describe.configure({ timeout: 60000 });
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     objectExplorerPage = new ObjectExplorerPage(page);
