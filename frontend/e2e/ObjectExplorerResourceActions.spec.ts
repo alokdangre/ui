@@ -115,7 +115,9 @@ test.describe('Object Explorer - Resource Viewing and Actions', () => {
       if (hasDetailsContent || hasTabs) {
         expect(hasDetailsContent || hasTabs).toBe(true);
       } else {
-        console.warn('Resource details panel not visible - feature may not be implemented, test skipped');
+        console.warn(
+          'Resource details panel not visible - feature may not be implemented, test skipped'
+        );
         expect(true).toBe(true);
       }
     }
