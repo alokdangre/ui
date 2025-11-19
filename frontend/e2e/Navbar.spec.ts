@@ -701,7 +701,6 @@ test.describe('Navbar (Header)', () => {
 
   test.describe('Navbar performance and loading', () => {
     // REMOVED: Flaky timing-based test that fails inconsistently in CI
-
     // REMOVED: Flaky layout shift test that depends on timing and can fail due to animations
   });
 
