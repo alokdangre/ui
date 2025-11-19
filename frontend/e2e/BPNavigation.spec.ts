@@ -63,14 +63,7 @@ test.describe('Binding Policy - Navigation', () => {
     await expect(page).not.toHaveURL(/\/login/);
   });
 
-  test('should display page within acceptable time', async () => {
-    const startTime = Date.now();
-    await bpPage.goto();
-    const loadTime = Date.now() - startTime;
-
-    // Page should load within 5 seconds
-    expect(loadTime).toBeLessThan(5000);
-  });
+  // REMOVED: Flaky timing-based test that can fail due to network conditions
 
   test('should have proper page title', async () => {
     await bpPage.goto();

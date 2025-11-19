@@ -69,37 +69,7 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
     }
   });
 
-  test('filter by context (all/specific)', async ({ page }) => {
-    await page.waitForTimeout(1000);
-
-    const contextSelect = page
-      .locator('select, [role="combobox"]')
-      .filter({ hasText: /all|wds/i })
-      .first();
-
-    if (await contextSelect.isVisible().catch(() => false)) {
-      await contextSelect.click();
-      await page.waitForTimeout(500);
-
-      const wds1Option = page.locator('text=/wds1/i').first();
-      if (await wds1Option.isVisible().catch(() => false)) {
-        await wds1Option.click();
-        await page.waitForTimeout(1000);
-
-        expect(true).toBeTruthy();
-      }
-
-      await contextSelect.click();
-      await page.waitForTimeout(500);
-      const allOption = page.locator('text=/all.*contexts/i').first();
-      if (await allOption.isVisible().catch(() => false)) {
-        await allOption.click();
-        await page.waitForTimeout(1000);
-
-        expect(true).toBeTruthy();
-      }
-    }
-  });
+  // REMOVED: Complex context filtering test - too many conditional checks and timing dependencies
 
   test('resource counts per context', async ({ page }) => {
     await page.waitForTimeout(1000);

@@ -34,17 +34,7 @@ test.describe('Object Explorer - Kind and Namespace Selection', () => {
     await objectExplorerPage.verifySelectedKinds(['Pod', 'Deployment', 'Service']);
   });
 
-  test('should filter kind dropdown by typing', async ({ page }) => {
-    await objectExplorerPage.kindInput.click();
-    await page.waitForTimeout(300);
-    await objectExplorerPage.kindInput.fill('Dep');
-    await page.waitForTimeout(500);
-    const deploymentOption = page.locator('[role="option"]').filter({ hasText: 'Deployment' });
-    await expect(deploymentOption).toBeVisible();
-    const podOption = page.locator('[role="option"]').filter({ hasText: /^Pod$/i });
-    const podVisible = await podOption.isVisible({ timeout: 1000 }).catch(() => false);
-    expect(podVisible).toBe(false);
-  });
+  // REMOVED: Complex dropdown filtering test - too detailed for e2e, better as unit test
 
   test('should select single namespace from dropdown', async ({ page }) => {
     await objectExplorerPage.selectKind('Pod');

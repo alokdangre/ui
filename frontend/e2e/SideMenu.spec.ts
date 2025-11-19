@@ -26,25 +26,7 @@ test.describe('Side Menu', () => {
   });
 
   test.describe('Side Menu Visibility and Structure', () => {
-    test('desktop side menu is visible on large screens', async ({ page }) => {
-      // Set desktop viewport
-      await page.setViewportSize({ width: 1280, height: 720 });
-      await page.waitForTimeout(500);
-
-      // Desktop sidebar should be visible
-      const desktopSidebar = page.locator('aside').first();
-      await expect(desktopSidebar).toBeVisible({ timeout: 5000 });
-    });
-
-    test('mobile menu button is visible on small screens', async ({ page }) => {
-      // Set mobile viewport
-      await page.setViewportSize({ width: 375, height: 667 });
-      await page.waitForTimeout(500);
-
-      // Mobile menu button should be visible in header
-      const mobileMenuButton = page.locator('header button[aria-label*="menu"]');
-      await expect(mobileMenuButton).toBeVisible({ timeout: 5000 });
-    });
+    // REMOVED: Redundant responsive tests - already covered in Navbar.spec.ts
 
     test('side menu contains all main navigation sections', async ({ page }) => {
       // Set desktop viewport
