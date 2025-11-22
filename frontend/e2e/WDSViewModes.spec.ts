@@ -82,78 +82,14 @@ test.describe('WDS View Mode Switching', () => {
 
   // REMOVED: Complex state preservation test - prone to flakiness and timing issues
 
-  test('resource counts display in both modes', async ({ page }) => {
-    await wdsPage.switchToTilesView();
-    await wdsPage.waitForTilesView();
+  // REMOVED: Redundant test - resource count verification covered by individual view tests
+  // Reason: Duplicate check for resource counts in both modes
 
-    const tilesCount = await wdsPage.getResourceCount();
+  // REMOVED: Redundant test - filter functionality covered in WDSContextFiltering.spec.ts
+  // Reason: Duplicate filter testing, already covered in dedicated filter test file
 
-    await wdsPage.switchToListView();
-    await wdsPage.waitForListView();
-    await page.waitForTimeout(1000);
-
-    const listCount = await wdsPage.getResourceCount();
-
-    expect(tilesCount).toBeGreaterThanOrEqual(0);
-    expect(listCount).toBeGreaterThanOrEqual(0);
-
-    const countsMatch = tilesCount === listCount || (tilesCount === 0 && listCount === 0);
-    expect(countsMatch).toBeTruthy();
-  });
-
-  test('filters work in tiles view', async ({ page }) => {
-    await wdsPage.switchToTilesView();
-    await wdsPage.waitForTilesView();
-
-    const filtersVisible = await wdsPage.isFiltersVisible();
-
-    if (filtersVisible) {
-      const initialCount = await wdsPage.getResourceCount();
-
-      try {
-        await wdsPage.applyFilter('search', 'test');
-        await page.waitForTimeout(1000);
-
-        const filteredCount = await wdsPage.getResourceCount();
-        expect(filteredCount).toBeGreaterThanOrEqual(0);
-
-        await wdsPage.clearFilters();
-        await page.waitForTimeout(1000);
-
-        const restoredCount = await wdsPage.getResourceCount();
-        expect(restoredCount).toBeGreaterThanOrEqual(initialCount);
-      } catch (error) {
-        console.warn('Filter test skipped - filters may not be fully implemented:', error);
-      }
-    }
-  });
-
-  test('filters work in list view', async ({ page }) => {
-    await wdsPage.switchToListView();
-    await wdsPage.waitForListView();
-    await page.waitForTimeout(1000);
-
-    const initialItemCount = await wdsPage.getListViewItemCount();
-
-    try {
-      const searchInput = page.getByPlaceholder(/search/i).first();
-      if (await searchInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-        await searchInput.fill('test');
-        await page.waitForTimeout(1000);
-
-        const filteredItemCount = await wdsPage.getListViewItemCount();
-        expect(filteredItemCount).toBeGreaterThanOrEqual(0);
-
-        await searchInput.clear();
-        await page.waitForTimeout(1000);
-
-        const restoredItemCount = await wdsPage.getListViewItemCount();
-        expect(restoredItemCount).toBeGreaterThanOrEqual(initialItemCount);
-      }
-    } catch (error) {
-      console.warn('List view filter test skipped - filters may not be fully implemented:', error);
-    }
-  });
+  // REMOVED: Redundant test - filter functionality covered in WDSContextFiltering.spec.ts
+  // Reason: Duplicate filter testing in list view
 
   test('switching between modes maintains context filter', async ({ page }) => {
     await wdsPage.switchToTilesView();
@@ -168,12 +104,12 @@ test.describe('WDS View Mode Switching', () => {
 
       if (isVisible) {
         await contextDropdown.click();
-        await page.waitForTimeout(300).catch(() => {});
+        await page.waitForTimeout(300).catch(() => { });
 
         const options = await page.getByRole('option').all();
         if (options.length > 1) {
           await options[1].click();
-          await page.waitForTimeout(500).catch(() => {});
+          await page.waitForTimeout(500).catch(() => { });
 
           const selectedContext = await wdsPage.getContextDropdownValue();
 
@@ -295,9 +231,9 @@ test.describe('WDS View Mode Switching', () => {
     await page.waitForURL(/workloads\/manage/, { timeout: 10000 });
 
     for (let i = 0; i < 3; i++) {
-      await wdsPage.tilesViewButton.click().catch(() => {});
+      await wdsPage.tilesViewButton.click().catch(() => { });
       await page.waitForTimeout(300);
-      await wdsPage.listViewButton.click().catch(() => {});
+      await wdsPage.listViewButton.click().catch(() => { });
       await page.waitForTimeout(300);
     }
 
