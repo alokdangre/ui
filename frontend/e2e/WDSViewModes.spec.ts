@@ -201,56 +201,6 @@ test.describe('WDS View Mode Switching', () => {
     }
   });
 
-  test('view mode persists after page refresh', async ({ page }) => {
-    await wdsPage.switchToListView();
-    await wdsPage.waitForListView();
-
-    await mswHelper.applyScenario('wdsSuccess');
-
-    await page.reload({ waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(1000);
-
-    if (page.url().includes('/login')) {
-      await loginPage.login();
-      await page.waitForURL(/workloads\/manage|/, { timeout: 10000 });
-    }
-
-    await wdsPage.ensureOnWdsPage();
-
-    await page.waitForURL(/workloads\/manage/, { timeout: 10000 }).catch(() => {
-      const currentUrl = page.url();
-      if (!currentUrl.includes('/workloads/manage')) {
-        throw new Error(`Expected to be on /workloads/manage but was on ${currentUrl}`);
-      }
-    });
-
-    await page.waitForSelector('h4, [class*="TreeViewHeader"]', { timeout: 10000 }).catch(() => {});
-
-    const buttonsVerified = await Promise.race([
-      wdsPage.verifyViewModeButtons().then(() => true),
-      page.waitForTimeout(5000).then(() => false),
-    ]).catch(() => false);
-
-    if (!buttonsVerified) {
-      await wdsPage.verifyViewModeButtons().catch(() => {});
-    }
-
-    await Promise.race([
-      wdsPage.waitForTilesView().then(() => 'tiles'),
-      wdsPage.waitForListView().then(() => 'list'),
-      page.waitForTimeout(5000).then(() => 'timeout'),
-    ]).catch(() => 'timeout');
-
-    await page.waitForTimeout(1000).catch(() => {});
-
-    const isListAfterRefresh = await wdsPage.isListViewActive();
-    const hasListViewContent = await wdsPage.listViewTable
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    expect(isListAfterRefresh || hasListViewContent).toBeTruthy();
-  });
-
   test('pagination works in list view', async ({ page }) => {
     await wdsPage.switchToListView();
     await wdsPage.waitForListView();

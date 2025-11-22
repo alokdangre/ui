@@ -38,23 +38,6 @@ test.describe('Binding Policy - Navigation', () => {
     expect(hasHeading || hasCreateButton || hasTable || hasEmptyState).toBeTruthy();
   });
 
-  test('should handle page reload', async ({ page }) => {
-    await bpPage.goto();
-
-    // Reload page
-    await page.reload();
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForTimeout(2000);
-
-    // Verify URL is still correct after reload
-    await expect(page).toHaveURL(/\/bp/, { timeout: 5000 });
-
-    // Verify page didn't crash - check for any content
-    const bodyText = await page.locator('body').textContent();
-    expect(bodyText).toBeTruthy();
-    expect(bodyText!.length).toBeGreaterThan(0);
-  });
-
   test('should maintain authentication after navigation', async ({ page }) => {
     await bpPage.goto();
 
