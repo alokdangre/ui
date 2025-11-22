@@ -44,7 +44,7 @@ test.describe('Side Menu', () => {
       await links
         .first()
         .waitFor({ state: 'visible', timeout: 5000 })
-        .catch(() => { });
+        .catch(() => {});
 
       const linkCount = await links.count();
 

@@ -104,12 +104,12 @@ test.describe('WDS View Mode Switching', () => {
 
       if (isVisible) {
         await contextDropdown.click();
-        await page.waitForTimeout(300).catch(() => { });
+        await page.waitForTimeout(300).catch(() => {});
 
         const options = await page.getByRole('option').all();
         if (options.length > 1) {
           await options[1].click();
-          await page.waitForTimeout(500).catch(() => { });
+          await page.waitForTimeout(500).catch(() => {});
 
           const selectedContext = await wdsPage.getContextDropdownValue();
 
@@ -231,9 +231,9 @@ test.describe('WDS View Mode Switching', () => {
     await page.waitForURL(/workloads\/manage/, { timeout: 10000 });
 
     for (let i = 0; i < 3; i++) {
-      await wdsPage.tilesViewButton.click().catch(() => { });
+      await wdsPage.tilesViewButton.click().catch(() => {});
       await page.waitForTimeout(300);
-      await wdsPage.listViewButton.click().catch(() => { });
+      await wdsPage.listViewButton.click().catch(() => {});
       await page.waitForTimeout(300);
     }
 
