@@ -168,12 +168,12 @@ test.describe('WDS View Mode Switching', () => {
 
       if (isVisible) {
         await contextDropdown.click();
-        await page.waitForTimeout(300).catch(() => {});
+        await page.waitForTimeout(300).catch(() => { });
 
         const options = await page.getByRole('option').all();
         if (options.length > 1) {
           await options[1].click();
-          await page.waitForTimeout(500).catch(() => {});
+          await page.waitForTimeout(500).catch(() => { });
 
           const selectedContext = await wdsPage.getContextDropdownValue();
 
@@ -210,21 +210,12 @@ test.describe('WDS View Mode Switching', () => {
     await page.reload({ waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
-    const currentUrl = page.url();
-    if (currentUrl.includes('/login')) {
+    if (page.url().includes('/login')) {
       await loginPage.login();
       await page.waitForURL(/workloads\/manage|/, { timeout: 10000 });
     }
 
     await wdsPage.ensureOnWdsPage();
-
-    const urlAfterEnsure = page.url();
-    if (urlAfterEnsure.includes('/install')) {
-      await page.goto(`${wdsPage.BASE_URL}/workloads/manage`, {
-        waitUntil: 'domcontentloaded',
-      });
-      await page.waitForTimeout(1000);
-    }
 
     await page.waitForURL(/workloads\/manage/, { timeout: 10000 }).catch(() => {
       const currentUrl = page.url();
@@ -233,7 +224,7 @@ test.describe('WDS View Mode Switching', () => {
       }
     });
 
-    await page.waitForSelector('h4, [class*="TreeViewHeader"]', { timeout: 10000 }).catch(() => {});
+    await page.waitForSelector('h4, [class*=\"TreeViewHeader\"]', { timeout: 10000 }).catch(() => { });
 
     const buttonsVerified = await Promise.race([
       wdsPage.verifyViewModeButtons().then(() => true),
@@ -241,7 +232,7 @@ test.describe('WDS View Mode Switching', () => {
     ]).catch(() => false);
 
     if (!buttonsVerified) {
-      await wdsPage.verifyViewModeButtons().catch(() => {});
+      await wdsPage.verifyViewModeButtons().catch(() => { });
     }
 
     await Promise.race([
@@ -250,7 +241,7 @@ test.describe('WDS View Mode Switching', () => {
       page.waitForTimeout(5000).then(() => 'timeout'),
     ]).catch(() => 'timeout');
 
-    await page.waitForTimeout(1000).catch(() => {});
+    await page.waitForTimeout(1000).catch(() => { });
 
     const isListAfterRefresh = await wdsPage.isListViewActive();
     const hasListViewContent = await wdsPage.listViewTable
@@ -354,9 +345,9 @@ test.describe('WDS View Mode Switching', () => {
     await page.waitForURL(/workloads\/manage/, { timeout: 10000 });
 
     for (let i = 0; i < 3; i++) {
-      await wdsPage.tilesViewButton.click().catch(() => {});
+      await wdsPage.tilesViewButton.click().catch(() => { });
       await page.waitForTimeout(300);
-      await wdsPage.listViewButton.click().catch(() => {});
+      await wdsPage.listViewButton.click().catch(() => { });
       await page.waitForTimeout(300);
     }
 
