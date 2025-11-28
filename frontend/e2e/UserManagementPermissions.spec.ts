@@ -63,8 +63,7 @@ test.describe('User Management - Permission Management', () => {
     expect(await userManagementPage.userExists(username)).toBeTruthy();
   });
 
-  // REMOVED: Redundant permission creation tests - read permissions test covers the functionality
-
+  
   test('should update user permissions', async () => {
     const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');
@@ -108,8 +107,7 @@ test.describe('User Management - Permission Management', () => {
     await userManagementPage.verifyUserIsAdmin(username);
   });
 
-  // REMOVED: Overly detailed UI state tests - these are better suited for unit tests
-
+  
   test('should display current permissions when editing user', async () => {
     const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');

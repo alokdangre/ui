@@ -303,8 +303,7 @@ test.describe('User Management - Pagination and Performance', () => {
     await userManagementPage.goto();
   });
 
-  // REMOVED: Flaky timing-based test
-
+  
   test('should handle search with debouncing', async () => {
     await userManagementPage.filterButton.click();
     await userManagementPage.searchInput.fill('a');
@@ -332,5 +331,4 @@ test.describe('User Management - Pagination and Performance', () => {
     expect(userCount).toBeGreaterThan(0);
   });
 
-  // REMOVED: Another flaky timing-based performance test
 });

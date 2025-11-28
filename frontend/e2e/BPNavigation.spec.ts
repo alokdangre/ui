@@ -46,7 +46,6 @@ test.describe('Binding Policy - Navigation', () => {
     await expect(page).not.toHaveURL(/\/login/);
   });
 
-  // REMOVED: Flaky timing-based test that can fail due to network conditions
 
   test('should have proper page title', async () => {
     await bpPage.goto();

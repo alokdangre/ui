@@ -86,8 +86,7 @@ test.describe('Dashboard Page', () => {
       expect(linkCount).toBeGreaterThan(0);
     });
 
-    // REMOVED: Redundant test - page structure already verified by 'dashboard page loads successfully'
-    // Reason: Duplicate check for cards/structure, covered by first test
+
   });
 
   test.describe('Statistics Cards', () => {
@@ -163,11 +162,6 @@ test.describe('Dashboard Page', () => {
       expect(iconCount).toBeGreaterThan(0);
     });
 
-    // REMOVED: Redundant test - MSW data values already verified by 'statistics cards display correct data from MSW'
-    // Reason: Duplicate verification of MSW mock data values
-
-    // REMOVED: Redundant test - tooltip structure already verified by 'resource utilization progress bars are visible'
-    // Reason: Duplicate check for tooltip elements
 
     test('cluster status distribution is visible', async ({ page }) => {
       await expect(page.getByRole('heading', { name: 'Cluster Status' })).toBeVisible();
@@ -188,8 +182,6 @@ test.describe('Dashboard Page', () => {
       await expect(page.locator('text=Active').first()).toBeVisible();
     });
 
-    // REMOVED: Redundant test - capacity information already verified by 'cluster list displays mock cluster data'
-    // Reason: Duplicate check for cluster capacity data
 
     test('cluster items are clickable and open detail dialog', async ({ page }) => {
       const firstCluster = page.getByRole('heading', { name: 'cluster1' }).first();
@@ -236,14 +228,6 @@ test.describe('Dashboard Page', () => {
       expect(hasUserData || hasActivityStructure || hasStatusIndicators).toBeTruthy();
     });
 
-    // REMOVED: Flaky test - complex conditional logic with multiple fallbacks and timing dependencies
-    // Reason: Too many conditional paths, uses waitForTimeout, unreliable navigation checks
-
-    // REMOVED: Redundant test - refresh functionality not critical for dashboard load testing
-    // Reason: Trivial button click test
-
-    // REMOVED: Trivial test - timestamp presence is not critical
-    // Reason: Simple visibility check with no meaningful assertion
   });
 
   test.describe('MSW Integration and Data Flow', () => {
@@ -254,9 +238,6 @@ test.describe('Dashboard Page', () => {
 
       expect(hasHandlers).toBeTruthy();
     });
-
-    // REMOVED: Flaky test - complex conditional logic with page reload and multiple error state checks
-    // Reason: Too many conditional paths, uses resetHandlers which affects other tests, unreliable
   });
 
   test.describe('Responsive Design', () => {
@@ -304,8 +285,6 @@ test.describe('Dashboard Page', () => {
       await expect(focusedElement).toBeVisible();
     });
 
-    // REMOVED: Trivial test - color contrast is visual QA, not functional testing
-    // Reason: Visual test that doesn't verify meaningful functionality
   });
 
   test.describe('Theme Integration', () => {
@@ -333,7 +312,5 @@ test.describe('Dashboard Page', () => {
   });
 
   test.describe('Error Handling', () => {
-    // REMOVED: Flaky test - extremely complex conditional logic with route abortion and multiple fallback checks
-    // Reason: Too many conditional paths (10+ checks), uses route abortion which can affect other tests, unreliable
   });
 });

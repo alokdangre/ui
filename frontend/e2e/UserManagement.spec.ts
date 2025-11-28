@@ -188,5 +188,4 @@ test.describe('User Management - Responsive Design', () => {
     await userManagementPage.verifyPageElements();
   });
 
-  // REMOVED: Redundant tablet and desktop viewport tests - mobile test covers responsive behavior
 });

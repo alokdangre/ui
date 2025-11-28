@@ -80,17 +80,6 @@ test.describe('WDS View Mode Switching', () => {
     expect(hasTable || hasListItems || hasEmptyState).toBeTruthy();
   });
 
-  // REMOVED: Complex state preservation test - prone to flakiness and timing issues
-
-  // REMOVED: Redundant test - resource count verification covered by individual view tests
-  // Reason: Duplicate check for resource counts in both modes
-
-  // REMOVED: Redundant test - filter functionality covered in WDSContextFiltering.spec.ts
-  // Reason: Duplicate filter testing, already covered in dedicated filter test file
-
-  // REMOVED: Redundant test - filter functionality covered in WDSContextFiltering.spec.ts
-  // Reason: Duplicate filter testing in list view
-
   test('switching between modes maintains context filter', async ({ page }) => {
     await wdsPage.switchToTilesView();
     await wdsPage.waitForTilesView();

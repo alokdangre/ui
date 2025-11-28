@@ -80,7 +80,6 @@ test.describe('ITS Table Features Tests', () => {
     }
   });
 
-  // REMOVED: Complex state persistence test - prone to flakiness and timing issues
 
   test('table displays empty state when no results', async () => {
     const searchInput = itsPage.searchInput;

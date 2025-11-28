@@ -59,7 +59,6 @@ test.describe('Language Switcher', () => {
       await expect(dropdown).not.toBeVisible();
     });
 
-    // REMOVED: Flaky persistence test with multiple skip conditions and race conditions
   });
 
   test.describe('Language Switcher Accessibility', () => {
@@ -184,6 +183,5 @@ test.describe('Language Switcher', () => {
       await expect(dropdown).toBeVisible();
     });
 
-    // REMOVED: Redundant tablet viewport test - mobile test covers responsive behavior
   });
 });

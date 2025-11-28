@@ -69,7 +69,6 @@ test.describe('Navbar (Header)', () => {
     });
   });
 
-  // REMOVED: Redundant navigation tests - covered in SideMenu.spec.ts
 
   test.describe('Theme toggle functionality', () => {
     test('theme toggle button changes icon on click', async ({ page }) => {

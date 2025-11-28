@@ -26,7 +26,6 @@ test.describe('Side Menu', () => {
   });
 
   test.describe('Side Menu Visibility and Structure', () => {
-    // REMOVED: Redundant responsive tests - already covered in Navbar.spec.ts
 
     test('side menu contains all main navigation sections', async ({ page }) => {
       // Set desktop viewport
@@ -99,7 +98,6 @@ test.describe('Side Menu', () => {
       }
     });
 
-    // REMOVED: Redundant test - basic link verification covered by specific navigation tests above
   });
 
   test.describe('Side Menu Collapse/Expand Functionality', () => {
@@ -292,7 +290,4 @@ test.describe('Side Menu', () => {
     });
   });
 
-  // REMOVED: Redundant responsive tests - already covered in Navbar.spec.ts
-
-  // REMOVED: Flaky performance tests - timing-based, unreliable in CI
 });

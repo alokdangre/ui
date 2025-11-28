@@ -129,7 +129,6 @@ test.describe('User Management - Create Operations', () => {
     }
   });
 
-  // REMOVED: Trivial form reset test
 });
 
 test.describe('User Management - Update Operations', () => {
@@ -221,9 +220,6 @@ test.describe('User Management - Update Operations', () => {
     expect(modalVisible).toBeTruthy();
   });
 
-  // REMOVED: Trivial cancel test - basic functionality
-
-  // REMOVED: Redundant test - covered by other update tests
 });
 
 test.describe('User Management - Delete Operations', () => {
@@ -251,7 +247,6 @@ test.describe('User Management - Delete Operations', () => {
     expect(await userManagementPage.userExists(username)).toBeFalsy();
   });
 
-  // REMOVED: Trivial confirmation modal test
 
   test('should cancel delete operation', async () => {
     await userManagementPage.clickDeleteUser('testuser');
@@ -270,9 +265,6 @@ test.describe('User Management - Delete Operations', () => {
     expect(await userManagementPage.userExists('admin')).toBeTruthy();
   });
 
-  // REMOVED: Redundant user count test - covered by basic delete test
-
-  // REMOVED: Redundant sequential delete test - covered by basic delete test
 });
 
 test.describe('User Management - Complex CRUD Workflows', () => {
@@ -332,5 +324,4 @@ test.describe('User Management - Complex CRUD Workflows', () => {
     expect(await userManagementPage.userExists(user2)).toBeTruthy();
   });
 
-  // REMOVED: Redundant data integrity test - covered by basic CRUD tests
 });

@@ -62,8 +62,6 @@ test.describe('Object Explorer - Resource Viewing and Actions', () => {
     expect(rows.length).toBeGreaterThan(0);
   });
 
-  // REMOVED: Overly detailed UI element tests - these are better suited for unit tests
-  // Testing specific CSS classes and icon types is too granular for e2e testing
 
   test('should click on resource to view details', async ({ page }) => {
     await objectExplorerPage.changeViewMode('grid');

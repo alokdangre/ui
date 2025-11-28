@@ -34,7 +34,6 @@ test.describe('Object Explorer - Kind and Namespace Selection', () => {
     await objectExplorerPage.verifySelectedKinds(['Pod', 'Deployment', 'Service']);
   });
 
-  // REMOVED: Complex dropdown filtering test - too detailed for e2e, better as unit test
 
   test('should select single namespace from dropdown', async ({ page }) => {
     await objectExplorerPage.selectKind('Pod');

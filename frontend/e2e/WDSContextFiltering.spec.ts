@@ -69,11 +69,7 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
     }
   });
 
-  // REMOVED: Complex context filtering test - too many conditional checks and timing dependencies
-
-  // REMOVED: Trivial test - resource count check is not meaningful
-  // Reason: Weak assertion (count >= 0), doesn't verify actual functionality
-
+  
   test('create new context dialog', async ({ page }) => {
     await page.waitForTimeout(1000);
 
@@ -143,12 +139,7 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
     expect(hasNameInput).toBeTruthy();
   });
 
-  // REMOVED: Flaky test - WebSocket dependency, complex conditional logic, excessive waits
-  // Reason: Depends on WebSocket events, 8+ waitForTimeout calls, complex nested conditionals
-
-  // REMOVED: Flaky test - complex nested conditionals, excessive waits, weak assertions
-  // Reason: 5+ waitForTimeout calls, nested conditionals, doesn't verify actual version selection
-
+  
   test('filter updates tree view', async ({ page }) => {
     await page.waitForFunction(
       () => {
@@ -214,6 +205,4 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
     }
   });
 
-  // REMOVED: Flaky test - loop with multiple contexts, excessive waits, complex error handling
-  // Reason: 10+ waitForTimeout calls in loop, complex conditional logic, error throwing in test
 });

@@ -44,7 +44,6 @@ test.describe('Theme Toggle Button', () => {
     expect(initialTheme).not.toBe(newTheme);
   });
 
-  // REMOVED: Unnecessary test that only checks for div elements - not critical functionality
 
   test('multiple theme toggles work correctly', async ({ page }) => {
     const themeToggle = page.locator('header button[aria-label*="theme"]');
@@ -66,5 +65,4 @@ test.describe('Theme Toggle Button', () => {
     expect(initialTheme).toBe(finalTheme);
   });
 
-  // REMOVED: Mobile visibility test - redundant with responsive tests in other files
 });
