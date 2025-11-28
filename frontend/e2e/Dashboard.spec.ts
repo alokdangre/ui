@@ -85,8 +85,6 @@ test.describe('Dashboard Page', () => {
       const linkCount = await navLinks.count();
       expect(linkCount).toBeGreaterThan(0);
     });
-
-
   });
 
   test.describe('Statistics Cards', () => {
@@ -162,7 +160,6 @@ test.describe('Dashboard Page', () => {
       expect(iconCount).toBeGreaterThan(0);
     });
 
-
     test('cluster status distribution is visible', async ({ page }) => {
       await expect(page.getByRole('heading', { name: 'Cluster Status' })).toBeVisible();
       await expect(page.locator('text=Active Clusters').first()).toBeVisible();
@@ -181,7 +178,6 @@ test.describe('Dashboard Page', () => {
       await expect(page.getByRole('heading', { name: 'cluster2' }).first()).toBeVisible();
       await expect(page.locator('text=Active').first()).toBeVisible();
     });
-
 
     test('cluster items are clickable and open detail dialog', async ({ page }) => {
       const firstCluster = page.getByRole('heading', { name: 'cluster1' }).first();
@@ -227,7 +223,6 @@ test.describe('Dashboard Page', () => {
 
       expect(hasUserData || hasActivityStructure || hasStatusIndicators).toBeTruthy();
     });
-
   });
 
   test.describe('MSW Integration and Data Flow', () => {
@@ -284,7 +279,6 @@ test.describe('Dashboard Page', () => {
       const focusedElement = page.locator(':focus');
       await expect(focusedElement).toBeVisible();
     });
-
   });
 
   test.describe('Theme Integration', () => {
@@ -311,6 +305,5 @@ test.describe('Dashboard Page', () => {
     });
   });
 
-  test.describe('Error Handling', () => {
-  });
+  test.describe('Error Handling', () => {});
 });

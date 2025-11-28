@@ -58,7 +58,6 @@ test.describe('Language Switcher', () => {
       // Verify language changed (dropdown should close)
       await expect(dropdown).not.toBeVisible();
     });
-
   });
 
   test.describe('Language Switcher Accessibility', () => {
@@ -182,6 +181,5 @@ test.describe('Language Switcher', () => {
       const dropdown = page.locator('[role="listbox"]');
       await expect(dropdown).toBeVisible();
     });
-
   });
 });

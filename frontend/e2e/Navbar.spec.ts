@@ -69,7 +69,6 @@ test.describe('Navbar (Header)', () => {
     });
   });
 
-
   test.describe('Theme toggle functionality', () => {
     test('theme toggle button changes icon on click', async ({ page }) => {
       const themeToggle = page.locator('header button[aria-label*="theme"]');

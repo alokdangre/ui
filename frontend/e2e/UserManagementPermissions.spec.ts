@@ -63,7 +63,6 @@ test.describe('User Management - Permission Management', () => {
     expect(await userManagementPage.userExists(username)).toBeTruthy();
   });
 
-  
   test('should update user permissions', async () => {
     const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');
@@ -107,7 +106,6 @@ test.describe('User Management - Permission Management', () => {
     await userManagementPage.verifyUserIsAdmin(username);
   });
 
-  
   test('should display current permissions when editing user', async () => {
     const page = userManagementPage.page;
     await userManagementPage.clickEditUser('testuser');

@@ -187,5 +187,4 @@ test.describe('User Management - Responsive Design', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await userManagementPage.verifyPageElements();
   });
-
 });

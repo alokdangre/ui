@@ -69,7 +69,6 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
     }
   });
 
-  
   test('create new context dialog', async ({ page }) => {
     await page.waitForTimeout(1000);
 
@@ -139,7 +138,6 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
     expect(hasNameInput).toBeTruthy();
   });
 
-  
   test('filter updates tree view', async ({ page }) => {
     await page.waitForFunction(
       () => {
@@ -204,5 +202,4 @@ test.describe('WDS Context Filtering - Context Management Tests', () => {
       }
     }
   });
-
 });

@@ -303,7 +303,6 @@ test.describe('User Management - Pagination and Performance', () => {
     await userManagementPage.goto();
   });
 
-  
   test('should handle search with debouncing', async () => {
     await userManagementPage.filterButton.click();
     await userManagementPage.searchInput.fill('a');
@@ -330,5 +329,4 @@ test.describe('User Management - Pagination and Performance', () => {
     const userCount = await userManagementPage.getUserCount();
     expect(userCount).toBeGreaterThan(0);
   });
-
 });

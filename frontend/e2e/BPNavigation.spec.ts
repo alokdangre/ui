@@ -46,7 +46,6 @@ test.describe('Binding Policy - Navigation', () => {
     await expect(page).not.toHaveURL(/\/login/);
   });
 
-
   test('should have proper page title', async () => {
     await bpPage.goto();
 

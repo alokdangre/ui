@@ -34,7 +34,6 @@ test.describe('Object Explorer - Kind and Namespace Selection', () => {
     await objectExplorerPage.verifySelectedKinds(['Pod', 'Deployment', 'Service']);
   });
 
-
   test('should select single namespace from dropdown', async ({ page }) => {
     await objectExplorerPage.selectKind('Pod');
     await page.waitForTimeout(500);

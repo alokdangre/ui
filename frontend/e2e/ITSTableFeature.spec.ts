@@ -80,7 +80,6 @@ test.describe('ITS Table Features Tests', () => {
     }
   });
 
-
   test('table displays empty state when no results', async () => {
     const searchInput = itsPage.searchInput;
     await searchInput.fill('nonexistent-cluster-xyz');

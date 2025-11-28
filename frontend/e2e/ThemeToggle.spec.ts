@@ -44,7 +44,6 @@ test.describe('Theme Toggle Button', () => {
     expect(initialTheme).not.toBe(newTheme);
   });
 
-
   test('multiple theme toggles work correctly', async ({ page }) => {
     const themeToggle = page.locator('header button[aria-label*="theme"]');
     const htmlElement = page.locator('html');
@@ -64,5 +63,4 @@ test.describe('Theme Toggle Button', () => {
     // Should be back to initial theme
     expect(initialTheme).toBe(finalTheme);
   });
-
 });

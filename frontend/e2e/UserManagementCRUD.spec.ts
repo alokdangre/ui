@@ -128,7 +128,6 @@ test.describe('User Management - Create Operations', () => {
       await userManagementPage.waitForErrorToast();
     }
   });
-
 });
 
 test.describe('User Management - Update Operations', () => {
@@ -219,7 +218,6 @@ test.describe('User Management - Update Operations', () => {
     const modalVisible = await userManagementPage.modal.isVisible();
     expect(modalVisible).toBeTruthy();
   });
-
 });
 
 test.describe('User Management - Delete Operations', () => {
@@ -247,7 +245,6 @@ test.describe('User Management - Delete Operations', () => {
     expect(await userManagementPage.userExists(username)).toBeFalsy();
   });
 
-
   test('should cancel delete operation', async () => {
     await userManagementPage.clickDeleteUser('testuser');
     await userManagementPage.cancelDeleteUser();
@@ -264,7 +261,6 @@ test.describe('User Management - Delete Operations', () => {
     await page.waitForTimeout(2000);
     expect(await userManagementPage.userExists('admin')).toBeTruthy();
   });
-
 });
 
 test.describe('User Management - Complex CRUD Workflows', () => {
@@ -323,5 +319,4 @@ test.describe('User Management - Complex CRUD Workflows', () => {
     expect(await userManagementPage.userExists(user1)).toBeTruthy();
     expect(await userManagementPage.userExists(user2)).toBeTruthy();
   });
-
 });

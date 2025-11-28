@@ -26,7 +26,6 @@ test.describe('Side Menu', () => {
   });
 
   test.describe('Side Menu Visibility and Structure', () => {
-
     test('side menu contains all main navigation sections', async ({ page }) => {
       // Set desktop viewport
       await page.setViewportSize({ width: 1280, height: 720 });
@@ -97,7 +96,6 @@ test.describe('Side Menu', () => {
         await expect(page).toHaveURL('/its', { timeout: 5000 });
       }
     });
-
   });
 
   test.describe('Side Menu Collapse/Expand Functionality', () => {
@@ -289,5 +287,4 @@ test.describe('Side Menu', () => {
       expect(ariaLabel).toBeTruthy();
     });
   });
-
 });

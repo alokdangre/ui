@@ -62,7 +62,6 @@ test.describe('Object Explorer - Resource Viewing and Actions', () => {
     expect(rows.length).toBeGreaterThan(0);
   });
 
-
   test('should click on resource to view details', async ({ page }) => {
     await objectExplorerPage.changeViewMode('grid');
     await page.waitForTimeout(500);
