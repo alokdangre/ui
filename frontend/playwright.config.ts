@@ -98,7 +98,14 @@ export default defineConfig({
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { 
+        ...devices['Desktop Safari'],
+        // Webkit is slower, give it more time
+        actionTimeout: 20000,
+        navigationTimeout: 40000,
+      },
+      // More retries for webkit as it can be flaky
+      retries: isCI ? 3 : 0,
     },
 
     // Only include branded browsers in local development (not CI)

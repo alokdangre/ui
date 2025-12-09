@@ -54,7 +54,13 @@ jobs:
     
     - name: Install Playwright Browsers
       working-directory: ./frontend
-      run: npx playwright install --with-deps ${{ matrix.browser }}
+      run: |
+        npx playwright install --with-deps ${{ matrix.browser }}
+        # Ensure all system dependencies are installed for webkit
+        if [ "${{ matrix.browser }}" = "webkit" ]; then
+          sudo apt-get update
+          sudo apt-get install -y libwoff1 libopus0 libwebpdemux2 libharfbuzz-icu0 libenchant-2-2 libsecret-1-0 libhyphen0 libmanette-0.2-0 libflite1 libgles2 gstreamer1.0-libav
+        fi
     
     - name: Run Playwright tests
       working-directory: ./frontend
