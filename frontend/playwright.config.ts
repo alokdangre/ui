@@ -98,7 +98,7 @@ export default defineConfig({
 
     {
       name: 'webkit',
-      use: { 
+      use: {
         ...devices['Desktop Safari'],
         // Webkit is slower, give it more time
         actionTimeout: 20000,
