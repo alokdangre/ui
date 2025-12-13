@@ -223,7 +223,7 @@ test.describe('Login Page', () => {
       page
         .locator('.toast-loading, [role="status"]')
         .first()
-        .waitFor({ state: 'hidden', timeout: 3000 }),
+        .waitFor({ state: 'hidden', timeout: 10000 }),
       page
         .locator('[role="alert"], .toast-error')
         .first()

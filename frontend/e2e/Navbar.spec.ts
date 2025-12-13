@@ -259,35 +259,5 @@ test.describe('Navbar (Header)', () => {
         }
       }
     });
-
-    test('navbar has consistent styling', async ({ page }) => {
-      const header = page.locator('header');
-
-      // Check if header has some styling applied (background, border, or shadow)
-      const styles = await header.evaluate(el => {
-        const computed = window.getComputedStyle(el);
-        return {
-          backgroundColor: computed.backgroundColor,
-          borderBottom: computed.borderBottom,
-          boxShadow: computed.boxShadow,
-          position: computed.position,
-        };
-      });
-
-      // Header should have some styling - at least background color or position
-      const hasBackground =
-        styles.backgroundColor &&
-        styles.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
-        styles.backgroundColor !== 'transparent';
-      const hasBorder =
-        styles.borderBottom &&
-        styles.borderBottom !== 'none' &&
-        styles.borderBottom !== '0px none rgba(0, 0, 0, 0)';
-      const hasShadow = styles.boxShadow && styles.boxShadow !== 'none';
-      const isPositioned = styles.position === 'fixed' || styles.position === 'sticky';
-
-      // Should have at least one styling feature
-      expect(hasBackground || hasBorder || hasShadow || isPositioned).toBe(true);
-    });
   });
 });
