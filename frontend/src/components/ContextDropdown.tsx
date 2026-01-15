@@ -245,8 +245,7 @@ const ContextDropdown = ({
               height: '40px',
               justifyContent: 'space-between',
               textTransform: 'none',
-              borderColor:
-                theme === 'dark' ? 'rgba(255, 255, 255, 0.23)' : 'rgba(0, 0, 0, 0.23)',
+              borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.23)' : 'rgba(0, 0, 0, 0.23)',
               color: theme === 'dark' ? '#FFFFFF' : '#121212',
               '&:hover': {
                 borderColor: theme === 'dark' ? '#FFFFFF' : 'rgba(0, 0, 0, 0.87)',
@@ -372,10 +371,12 @@ const ContextDropdown = ({
                   alignItems: 'center',
                 }}
               >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {selectedContext === context && <CheckIcon fontSize="small" sx={{ fontSize: 16 }} />}
-                    <span>{context}</span>
-                  </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  {selectedContext === context && (
+                    <CheckIcon fontSize="small" sx={{ fontSize: 16 }} />
+                  )}
+                  <span>{context}</span>
+                </Box>
                 <Chip
                   label={getContextCount(context).toString()}
                   size="small"
