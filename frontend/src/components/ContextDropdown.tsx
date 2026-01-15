@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import {
   Box,
   MenuItem,
-  Select,
   Typography,
   Chip,
   Button,
@@ -13,10 +12,7 @@ import {
   TextField,
   CircularProgress,
   Menu,
-  ListItemIcon,
-  ListItemText,
 } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { useTranslation } from 'react-i18next'; // Add translation hook import
 import { toast } from 'react-hot-toast';
 import useTheme from '../stores/themeStore';
